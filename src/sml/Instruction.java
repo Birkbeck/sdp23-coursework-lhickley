@@ -2,6 +2,8 @@ package sml;
 
 // TODO: write a JavaDoc for the class
 
+import java.util.Objects;
+
 /**
  * Represents an abstract instruction.
  *
@@ -52,6 +54,21 @@ public abstract class Instruction {
 	//       (Write a short explanation.)
 	@Override
 	public abstract String toString();
+
+
+	// TODO: Private: should these be abstract?  Having a default seems both powerful and useful here.
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Instruction that = (Instruction) o;
+		return Objects.equals(label, that.label) && opcode.equals(that.opcode);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(label, opcode);
+	}
 
 	// TODO: Make sure that subclasses also implement equals and hashCode (needed in class Machine).
 }
