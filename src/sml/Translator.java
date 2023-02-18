@@ -96,6 +96,11 @@ public final class Translator {
                 int v = Integer.parseInt(scan());
                 return new MovInstruction(label, Register.valueOf(r), v);
             }
+            case JnzInstruction.OP_CODE -> {
+                String r = scan();
+                String l = scan();
+                return new JnzInstruction(label, Register.valueOf(r),l);
+            }
 
             // TODO: add code for all other types of instructions
 
