@@ -105,4 +105,21 @@ public class TranslatorTest {
         translator.readAndTranslate(machine.getLabels(), machine.getProgram());
         Assertions.assertEquals("[test: out EAX]", machine.getProgram().toString());
     }
+
+    @Test
+    void readAndTranslateMovInstructionNoLabel() throws Exception {
+        String fileLocation = new File(baseTestFilePath + "readAndTranslateMovInstructionNoLabelTestResource.txt").getAbsolutePath();
+        Translator translator = new Translator(fileLocation);
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        Assertions.assertEquals("[mov EAX 1]", machine.getProgram().toString());
+    }
+
+    @Test
+    void readAndTranslateMovInstructionWithLabel() throws Exception {
+        String fileLocation = new File(baseTestFilePath + "readAndTranslateMovInstructionWithLabelTestResource.txt").getAbsolutePath();
+        Translator translator = new Translator(fileLocation);
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        Assertions.assertEquals("[test: mov EAX 1]", machine.getProgram().toString());
+    }
+
 }
