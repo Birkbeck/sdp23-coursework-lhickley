@@ -62,6 +62,7 @@ public final class Translator {
      * with its label already removed.
      */
     private Instruction getInstruction(String label) {
+        //System.out.println(line);
         if (line.isEmpty())
             return null;
 

@@ -1,0 +1,5 @@
+mov EAX 1
+mov EBX 3
+add EAX EBX
+mov ECX 1
+sub EAX ECX

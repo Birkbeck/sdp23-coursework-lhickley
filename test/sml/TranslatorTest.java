@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class TranslatorTest {
     private Machine machine;
@@ -138,5 +139,28 @@ public class TranslatorTest {
         Assertions.assertEquals("[test: jnz EAX testLabel]", machine.getProgram().toString());
     }
 
+    @Test
+    void readAndTranslateMixedInstructionNoLabels() throws Exception {
+        String fileLocation = new File(baseTestFilePath + "readAndTranslateMixedInstructionNoLabelsTestResource.txt").getAbsolutePath();
+        Translator translator = new Translator(fileLocation);
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        Assertions.assertEquals("[mov EAX 1, mov EBX 3, add EAX EBX, mov ECX 1, sub EAX ECX]", machine.getProgram().toString());
+    }
+
+    @Test
+    void readAndTranslateMixedInstructionAllLabels() throws Exception {
+        String fileLocation = new File(baseTestFilePath + "readAndTranslateMixedInstructionAllLabelsTestResource.txt").getAbsolutePath();
+        Translator translator = new Translator(fileLocation);
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        Assertions.assertEquals("[test1: mov EAX 1, test2: mov EBX 3, test3: add EAX EBX, test4: mov ECX 1, test5: sub EAX ECX]", machine.getProgram().toString());
+    }
+
+    @Test
+    void readAndTranslateMixedInstructionMixedLabels() throws Exception {
+        String fileLocation = new File(baseTestFilePath + "readAndTranslateMixedInstructionMixedLabelsTestResource.txt").getAbsolutePath();
+        Translator translator = new Translator(fileLocation);
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        Assertions.assertEquals("[test1: mov EAX 1, mov EBX 3, add EAX EBX, test4: mov ECX 1, test5: sub EAX ECX]", machine.getProgram().toString());
+    }
 
 }
