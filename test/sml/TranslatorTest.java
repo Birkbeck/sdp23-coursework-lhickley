@@ -122,4 +122,21 @@ public class TranslatorTest {
         Assertions.assertEquals("[test: mov EAX 1]", machine.getProgram().toString());
     }
 
+    @Test
+    void readAndTranslateJnzInstructionNoLabel() throws Exception {
+        String fileLocation = new File(baseTestFilePath + "readAndTranslateJnzInstructionNoLabelTestResource.txt").getAbsolutePath();
+        Translator translator = new Translator(fileLocation);
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        Assertions.assertEquals("[jnz EAX testLabel]", machine.getProgram().toString());
+    }
+
+    @Test
+    void readAndTranslateJnzInstructionWithLabel() throws Exception {
+        String fileLocation = new File(baseTestFilePath + "readAndTranslateJnzInstructionWithLabelTestResource.txt").getAbsolutePath();
+        Translator translator = new Translator(fileLocation);
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        Assertions.assertEquals("[test: jnz EAX testLabel]", machine.getProgram().toString());
+    }
+
+
 }

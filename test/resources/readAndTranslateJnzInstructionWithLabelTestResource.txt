@@ -1,0 +1,1 @@
+test: jnz EAX testLabel
