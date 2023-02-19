@@ -60,7 +60,7 @@ public final class Labels {
 		return labels.entrySet()
 				.stream()
 				.map(e -> e.getKey() + " -> " + e.getValue())
-				.collect(Collectors.joining(","));
+				.collect(Collectors.joining(", ", "[", "]"));
 	}
 
 	/**
