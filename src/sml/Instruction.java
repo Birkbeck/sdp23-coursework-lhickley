@@ -55,8 +55,6 @@ public abstract class Instruction {
 	@Override
 	public abstract String toString();
 
-
-	// TODO: Private: should these be abstract?  Having a default seems both powerful and useful here.
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -70,5 +68,4 @@ public abstract class Instruction {
 		return Objects.hash(label, opcode);
 	}
 
-	// TODO: Make sure that subclasses also implement equals and hashCode (needed in class Machine).
 }
