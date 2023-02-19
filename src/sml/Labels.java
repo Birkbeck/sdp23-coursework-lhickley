@@ -35,10 +35,16 @@ public final class Labels {
 	 * @return the address the label refers to
 	 */
 	public int getAddress(String label) {
-		// TODO: Where can NullPointerException be thrown here?
-		//       (Write an explanation.)
-		//       Add code to deal with non-existent labels.
-		return labels.get(label);
+		/* We can get an error if we incorrectly store an address against a label
+		 * Specifically, this will become a problem if we store an address for an index which is larger than the size
+		 * of the ArrayList of Instructions 'program' in Machine.  If we attempt to jump to the index of this label
+		 * and this is outside the size of 'program', a NullPointerException will be thrown.
+		 */
+		if (!labels.containsKey(label)) {
+			throw new RuntimeException("The label " + label + " does not exist!");
+		} else {
+			return labels.get(label);
+		}
 	}
 
 	/**
