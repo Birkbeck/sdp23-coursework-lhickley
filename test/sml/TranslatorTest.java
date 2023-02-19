@@ -58,4 +58,22 @@ public class TranslatorTest {
         Assertions.assertEquals("[test: sub EAX EBX]", machine.getProgram().toString());
     }
 
+    @Test
+    void readAndTranslateMulInstructionNoLabel() throws Exception {
+        String fileLocation = new File(baseTestFilePath + "readAndTranslateMulInstructionNoLabelTestResource.txt").getAbsolutePath();
+        Translator translator = new Translator(fileLocation);
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        Assertions.assertEquals("[mul EAX EBX]", machine.getProgram().toString());
+    }
+
+    @Test
+    void readAndTranslateMulInstructionWithLabel() throws Exception {
+        String fileLocation = new File(baseTestFilePath + "readAndTranslateMulInstructionWithLabelTestResource.txt").getAbsolutePath();
+        Translator translator = new Translator(fileLocation);
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        Assertions.assertEquals("[test: mul EAX EBX]", machine.getProgram().toString());
+    }
+
+
+
 }
