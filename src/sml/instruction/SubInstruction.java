@@ -24,7 +24,6 @@ public class SubInstruction extends Instruction {
         return NORMAL_PROGRAM_COUNTER_UPDATE;
     }
 
-    //TODO: Private: Should this also include the contents of the registers, rather than just their names?  Perhaps one to query with Roman.
     @Override
     public String toString() {
         return getLabelString() + getOpcode() + " " + result + " " + source;
