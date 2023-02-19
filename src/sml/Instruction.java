@@ -50,8 +50,10 @@ public abstract class Instruction {
 		return (getLabel() == null) ? "" : getLabel() + ": ";
 	}
 
-	// TODO: What does abstract in the declaration below mean?
-	//       (Write a short explanation.)
+	/* An abstract method only has a method signature
+	 * It does not have a body (so, then, also does not have an implementation)
+	 * This forces any class implementing this abstract class to also implement this method
+	 */
 	@Override
 	public abstract String toString();
 
