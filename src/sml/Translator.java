@@ -2,11 +2,16 @@ package sml;
 
 import sml.instruction.*;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static sml.Registers.Register;
 
@@ -52,6 +57,28 @@ public final class Translator {
         }
     }
 
+    private Class getClass(String className, String packageName) {
+        try {
+            return Class.forName(packageName + "."
+                    + className.substring(0, className.lastIndexOf('.')));
+        } catch (ClassNotFoundException e) {
+            // handle the exception
+        }
+        return null;
+    }
+
+    public Set<Class> findAllClassesUsingClassLoader(String packageName) throws ClassNotFoundException {
+        //Class clazz = Class.forName("sml.Instruction");
+        //ClassLoader classLoader = clazz.getClassLoader();
+        InputStream stream = ClassLoader.getSystemClassLoader()
+                .getResourceAsStream(packageName.replaceAll("[.]", "/"));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        return reader.lines()
+                .filter(line -> line.endsWith(".class"))
+                .map(line -> getClass(line, packageName))
+                .collect(Collectors.toSet());
+    }
+
     /**
      * Translates the current line into an instruction with the given label
      *
@@ -62,11 +89,98 @@ public final class Translator {
      * with its label already removed.
      */
     private Instruction getInstruction(String label) {
-        //System.out.println(line);
         if (line.isEmpty())
             return null;
 
+        //System.out.println(line);
+
         String opcode = scan();
+        try {
+
+            //System.out.println(opcode);
+
+            Set<Class> allClasses = findAllClassesUsingClassLoader("sml.instruction");
+
+            //System.out.println(allClasses);
+
+            for (Class clazz : allClasses) {
+                //System.out.println(clazz);
+                //System.out.println(clazz.getClass());
+                //System.out.println(clazz.getName());
+                Class instruction = Class.forName(clazz.getName());
+                System.out.println(clazz.getName());
+                //System.out.println(instruction.getClass());
+                Method[] methods = instruction.getMethods();
+                //System.out.println(instruction.getName());
+                //System.out.println(methods);
+                for (Method method : methods) {
+                    //System.out.println(method);
+                }
+                /*Method opCodeMethod = clazz.getMethod("getOpcode", null);
+                System.out.println(opCodeMethod);
+                Method[] methods = clazz.getMethods();
+                for (Method method : methods) {
+                    System.out.println(method);
+                }
+
+                 */
+            }
+
+            System.out.println("*****");
+
+            Class testIns = Class.forName("sml.instruction.AddInstruction");
+
+            Method[] methods = testIns.getMethods();
+
+            /*System.out.println(testIns.getName());
+
+            for (Method method : methods) {
+                System.out.println(method);
+            }
+
+             */
+
+            System.out.println("*****");
+
+            /*Instruction instruction = allClasses.stream()
+                            .filter(c -> c.getOpcode() == opcode)
+
+             */
+            URL classStream = Class.class.getResource("sml/instruction");
+
+            System.out.println(classStream);
+
+            //classStream.
+
+
+
+            //System.out.println(allClasses);
+
+            //() -> sml.instruction
+
+            /*for (Instruction instruction : sml.instruction.*) {
+
+            }*/
+
+            //Class<? extends Instruction> clazz = Class.class.getDeclaredField(opcode);
+
+            //Field field = Class.class.getDeclaredField();
+            //System.out.println(field);
+
+        } catch (Exception e) {
+
+        }
+        /*try {
+            Class<Instruction> instructionClass = (Class<Instruction>) Class.forName("sml.Instruction");
+            Class<? extends Instruction> instructionWeWant = instructionClass.OP_CODE;
+        } catch (Exception e) {
+
+        }
+
+         */
+
+        return null;
+        /*
         switch (opcode) {
             case AddInstruction.OP_CODE -> {
                 String r = scan();
@@ -113,6 +227,8 @@ public final class Translator {
             }
         }
         return null;
+
+         */
     }
 
 
