@@ -76,8 +76,13 @@ public final class Translator {
         try {
             Class<?> instructionClass = Class.forName(instructionClassName);
             if (instructionClass.getSuperclass() == Instruction.class) {
-                //TODO Add better selection for the constructor
                 Constructor<?>[] constructors = instructionClass.getConstructors();
+
+                if (constructors.length != 1) {
+                    throw new RuntimeException("More than one constructor found for " + instructionClass.getName() +
+                            " only one should exist.");
+                }
+
                 //TODO Add some error handling to this
 
                 Constructor<?>constructor = constructors[0];
