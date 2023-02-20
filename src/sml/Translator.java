@@ -57,28 +57,6 @@ public final class Translator {
         }
     }
 
-    private Class getClass(String className, String packageName) {
-        try {
-            return Class.forName(packageName + "."
-                    + className.substring(0, className.lastIndexOf('.')));
-        } catch (ClassNotFoundException e) {
-            // handle the exception
-        }
-        return null;
-    }
-
-    public Set<Class> findAllClassesUsingClassLoader(String packageName) throws ClassNotFoundException {
-        //Class clazz = Class.forName("sml.Instruction");
-        //ClassLoader classLoader = clazz.getClassLoader();
-        InputStream stream = ClassLoader.getSystemClassLoader()
-                .getResourceAsStream(packageName.replaceAll("[.]", "/"));
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-        return reader.lines()
-                .filter(line -> line.endsWith(".class"))
-                .map(line -> getClass(line, packageName))
-                .collect(Collectors.toSet());
-    }
-
     /**
      * Translates the current line into an instruction with the given label
      *
