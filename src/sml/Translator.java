@@ -1,19 +1,11 @@
 package sml;
 
-import sml.instruction.*;
-
 import java.io.*;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static sml.Registers.Register;
-import static sml.Registers.Register.EAX;
 
 /**
  * This class ....
