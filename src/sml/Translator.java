@@ -92,71 +92,49 @@ public final class Translator {
         if (line.isEmpty())
             return null;
 
-        //System.out.println(line);
-
         String opcode = scan();
         String instructionClassName = "sml.instruction." + opcode.substring(0, 1).toUpperCase() + opcode.substring(1) + "Instruction";
-        ArrayList<String> constructorArgsList = new ArrayList<>();
-
-        //TODO Totally change how this works - leads to some horrible hacks below.
-        if (label != null) {
-            constructorArgsList.add(label);
-        } else {
-            constructorArgsList.add("null");
-        }
-
-        //TODO Eliminate this pattern, this can all be handled in the below using scan()
-        for (String s : line.split(" ")) {
-            if (s.length() > 0) {
-                constructorArgsList.add(s);
-            }
-        }
-
-        //System.out.println(constructorArgsList);
+        //ArrayList<String> constructorArgsList = new ArrayList<>();
 
         try {
             Class<?> instructionClass = Class.forName(instructionClassName);
             if (instructionClass.getSuperclass() == Instruction.class) {
                 //TODO Add better selection for the constructor
-                Constructor[] constructors = instructionClass.getConstructors();
+                Constructor<?>[] constructors = instructionClass.getConstructors();
                 //TODO Add some error handling to this
-                System.out.println("Here");
+
                 Constructor constructor = constructors[0];
                 Class[] parameters = constructor.getParameterTypes();
                 Object[] constructorArgs = new Object[parameters.length];
 
-                Arrays.stream(parameters).forEach(System.out::println);
+                //Arrays.stream(parameters).forEach(System.out::println);
 
-                System.out.println(parameters.length);
-                System.out.println(constructorArgs.length);
+                //System.out.println(parameters.length);
+                //System.out.println(constructorArgs.length);
 
 
                 for (int i = 0; i < parameters.length; i++) {
-                    System.out.println(i);
-                    String arg = constructorArgsList.get(i);
-                    System.out.println(arg);
-                    System.out.println("****");
-                    Arrays.stream(constructorArgs).forEach(System.out::println);
-                    System.out.println("****");
+                    //String arg = scan();
+                    //System.out.println(i);
+                    //String arg = constructorArgsList.get(i);
+                    //System.out.println(arg);
+                    //Arrays.stream(constructorArgs).forEach(System.out::println);
                     if (i == 0) {
                         constructorArgs[i] = label;
-                    } if (parameters[i].toString().equals("interface sml.RegisterName")) {
-                        System.out.println("fail1");
-                        constructorArgs[i] = Register.valueOf(arg);
-                        System.out.println("fail2");
-                    } else if (parameters[i].toString().equals("int")) {
-                        constructorArgs[i] = Integer.parseInt(arg);
                     } else {
-                        if (!Objects.equals(arg, "null")) {
+                        String arg = scan();
+                        if (parameters[i].toString().equals("interface sml.RegisterName")) {
+                            constructorArgs[i] = Register.valueOf(arg);
+                        } else if (parameters[i].toString().equals("int")) {
+                            constructorArgs[i] = Integer.parseInt(arg);
+                        } else {
                             constructorArgs[i] = arg;
                         }
                     }
                 }
-                Arrays.stream(constructorArgs).forEach(System.out::println);
-                System.out.println("We're here before there");
+                //Arrays.stream(constructorArgs).forEach(System.out::println);
                 Instruction instruction = (Instruction) constructor.newInstance(constructorArgs);
-                System.out.println("now we're here");
-                System.out.println(instruction);
+                //System.out.println(instruction);
                 return instruction;
             }
         } catch (Exception e) {
