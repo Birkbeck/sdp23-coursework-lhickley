@@ -94,7 +94,6 @@ public final class Translator {
 
         String opcode = scan();
         String instructionClassName = "sml.instruction." + opcode.substring(0, 1).toUpperCase() + opcode.substring(1) + "Instruction";
-        //ArrayList<String> constructorArgsList = new ArrayList<>();
 
         try {
             Class<?> instructionClass = Class.forName(instructionClassName);
@@ -103,25 +102,13 @@ public final class Translator {
                 Constructor<?>[] constructors = instructionClass.getConstructors();
                 //TODO Add some error handling to this
 
-                Constructor constructor = constructors[0];
-                Class[] parameters = constructor.getParameterTypes();
+                Constructor<?>constructor = constructors[0];
+                Class<?>[] parameters = constructor.getParameterTypes();
                 Object[] constructorArgs = new Object[parameters.length];
 
-                //Arrays.stream(parameters).forEach(System.out::println);
+                constructorArgs[0] = label;
 
-                //System.out.println(parameters.length);
-                //System.out.println(constructorArgs.length);
-
-
-                for (int i = 0; i < parameters.length; i++) {
-                    //String arg = scan();
-                    //System.out.println(i);
-                    //String arg = constructorArgsList.get(i);
-                    //System.out.println(arg);
-                    //Arrays.stream(constructorArgs).forEach(System.out::println);
-                    if (i == 0) {
-                        constructorArgs[i] = label;
-                    } else {
+                for (int i = 1; i < parameters.length; i++) {
                         String arg = scan();
                         if (parameters[i].toString().equals("interface sml.RegisterName")) {
                             constructorArgs[i] = Register.valueOf(arg);
@@ -130,12 +117,8 @@ public final class Translator {
                         } else {
                             constructorArgs[i] = arg;
                         }
-                    }
                 }
-                //Arrays.stream(constructorArgs).forEach(System.out::println);
-                Instruction instruction = (Instruction) constructor.newInstance(constructorArgs);
-                //System.out.println(instruction);
-                return instruction;
+                return (Instruction) constructor.newInstance(constructorArgs);
             }
         } catch (Exception e) {
             System.out.println(e);
