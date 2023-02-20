@@ -98,7 +98,6 @@ public final class Translator {
         } catch (Exception e) {
             System.out.println("Unknown instruction: " + opcode);
         }
-        // TODO: Then, replace the switch by using the Reflection API
 
         // TODO: Next, use dependency injection to allow this machine class
         //       to work with different sets of opcodes (different CPUs)
