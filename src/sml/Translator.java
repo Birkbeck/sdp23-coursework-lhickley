@@ -83,8 +83,6 @@ public final class Translator {
                             " only one should exist.");
                 }
 
-                //TODO Add some error handling to this
-
                 Constructor<?>constructor = constructors[0];
                 Class<?>[] parameters = constructor.getParameterTypes();
                 Object[] constructorArgs = new Object[parameters.length];
@@ -103,9 +101,10 @@ public final class Translator {
                 }
                 return (Instruction) constructor.newInstance(constructorArgs);
             }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Parameters supplied for " + opcode + " were incorrect");
         } catch (Exception e) {
-            System.out.println(e);
-            //System.out.println("Unknown instruction: " + opcode);
+            System.out.println("Unknown instruction: " + opcode);
         }
         // TODO: Then, replace the switch by using the Reflection API
 
