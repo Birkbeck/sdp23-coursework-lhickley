@@ -3,17 +3,17 @@ package sml;
 import sml.instruction.*;
 
 import java.io.*;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static sml.Registers.Register;
+import static sml.Registers.Register.EAX;
 
 /**
  * This class ....
@@ -30,7 +30,7 @@ public final class Translator {
     private String line = "";
 
     public Translator(String fileName) {
-        this.fileName =  fileName;
+        this.fileName = fileName;
     }
 
     // translate the small program in the file into lab (the labels) and
@@ -95,89 +95,75 @@ public final class Translator {
         //System.out.println(line);
 
         String opcode = scan();
+        String instructionClassName = "sml.instruction." + opcode.substring(0, 1).toUpperCase() + opcode.substring(1) + "Instruction";
+        ArrayList<String> constructorArgsList = new ArrayList<>();
+
+        //TODO Totally change how this works - leads to some horrible hacks below.
+        if (label != null) {
+            constructorArgsList.add(label);
+        } else {
+            constructorArgsList.add("null");
+        }
+
+        //TODO Eliminate this pattern, this can all be handled in the below using scan()
+        for (String s : line.split(" ")) {
+            if (s.length() > 0) {
+                constructorArgsList.add(s);
+            }
+        }
+
+        //System.out.println(constructorArgsList);
+
         try {
+            Class<?> instructionClass = Class.forName(instructionClassName);
+            if (instructionClass.getSuperclass() == Instruction.class) {
+                //TODO Add better selection for the constructor
+                Constructor[] constructors = instructionClass.getConstructors();
+                //TODO Add some error handling to this
+                System.out.println("Here");
+                Constructor constructor = constructors[0];
+                Class[] parameters = constructor.getParameterTypes();
+                Object[] constructorArgs = new Object[parameters.length];
 
-            //System.out.println(opcode);
+                Arrays.stream(parameters).forEach(System.out::println);
 
-            Set<Class> allClasses = findAllClassesUsingClassLoader("sml.instruction");
+                System.out.println(parameters.length);
+                System.out.println(constructorArgs.length);
 
-            //System.out.println(allClasses);
 
-            for (Class clazz : allClasses) {
-                //System.out.println(clazz);
-                //System.out.println(clazz.getClass());
-                //System.out.println(clazz.getName());
-                Class instruction = Class.forName(clazz.getName());
-                System.out.println(clazz.getName());
-                //System.out.println(instruction.getClass());
-                Method[] methods = instruction.getMethods();
-                //System.out.println(instruction.getName());
-                //System.out.println(methods);
-                for (Method method : methods) {
-                    //System.out.println(method);
+                for (int i = 0; i < parameters.length; i++) {
+                    System.out.println(i);
+                    String arg = constructorArgsList.get(i);
+                    System.out.println(arg);
+                    System.out.println("****");
+                    Arrays.stream(constructorArgs).forEach(System.out::println);
+                    System.out.println("****");
+                    if (i == 0) {
+                        constructorArgs[i] = label;
+                    } if (parameters[i].toString().equals("interface sml.RegisterName")) {
+                        System.out.println("fail1");
+                        constructorArgs[i] = Register.valueOf(arg);
+                        System.out.println("fail2");
+                    } else if (parameters[i].toString().equals("int")) {
+                        constructorArgs[i] = Integer.parseInt(arg);
+                    } else {
+                        if (!Objects.equals(arg, "null")) {
+                            constructorArgs[i] = arg;
+                        }
+                    }
                 }
-                /*Method opCodeMethod = clazz.getMethod("getOpcode", null);
-                System.out.println(opCodeMethod);
-                Method[] methods = clazz.getMethods();
-                for (Method method : methods) {
-                    System.out.println(method);
-                }
-
-                 */
+                Arrays.stream(constructorArgs).forEach(System.out::println);
+                System.out.println("We're here before there");
+                Instruction instruction = (Instruction) constructor.newInstance(constructorArgs);
+                System.out.println("now we're here");
+                System.out.println(instruction);
+                return instruction;
             }
-
-            System.out.println("*****");
-
-            Class testIns = Class.forName("sml.instruction.AddInstruction");
-
-            Method[] methods = testIns.getMethods();
-
-            /*System.out.println(testIns.getName());
-
-            for (Method method : methods) {
-                System.out.println(method);
-            }
-
-             */
-
-            System.out.println("*****");
-
-            /*Instruction instruction = allClasses.stream()
-                            .filter(c -> c.getOpcode() == opcode)
-
-             */
-            URL classStream = Class.class.getResource("sml/instruction");
-
-            System.out.println(classStream);
-
-            //classStream.
-
-
-
-            //System.out.println(allClasses);
-
-            //() -> sml.instruction
-
-            /*for (Instruction instruction : sml.instruction.*) {
-
-            }*/
-
-            //Class<? extends Instruction> clazz = Class.class.getDeclaredField(opcode);
-
-            //Field field = Class.class.getDeclaredField();
-            //System.out.println(field);
-
         } catch (Exception e) {
-
-        }
-        /*try {
-            Class<Instruction> instructionClass = (Class<Instruction>) Class.forName("sml.Instruction");
-            Class<? extends Instruction> instructionWeWant = instructionClass.OP_CODE;
-        } catch (Exception e) {
-
+            System.out.println(e);
+            //System.out.println("Unknown instruction: " + opcode);
         }
 
-         */
 
         return null;
         /*
