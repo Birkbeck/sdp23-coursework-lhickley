@@ -30,7 +30,7 @@ public class TranslatorTest {
     void readAndTranslateAddInstructionNoLabel() throws Exception {
         String fileLocation = new File(baseTestFilePath + "readAndTranslateAddInstructionNoLabelTestResource.txt").getAbsolutePath();
         Translator translator = new Translator(fileLocation);
-        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram(), machine.getInstructionFactory());
         Assertions.assertEquals("[add EAX EBX]", machine.getProgram().toString());
      }
 
@@ -38,7 +38,7 @@ public class TranslatorTest {
     void readAndTranslateAddInstructionWithLabel() throws Exception {
         String fileLocation = new File(baseTestFilePath + "readAndTranslateAddInstructionWithLabelTestResource.txt").getAbsolutePath();
         Translator translator = new Translator(fileLocation);
-        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram(), machine.getInstructionFactory());
         Assertions.assertEquals("[test: add EAX EBX]", machine.getProgram().toString());
     }
 
@@ -46,7 +46,7 @@ public class TranslatorTest {
     void readAndTranslateSubInstructionNoLabel() throws Exception {
          String fileLocation = new File(baseTestFilePath + "readAndTranslateSubInstructionNoLabelTestResource.txt").getAbsolutePath();
          Translator translator = new Translator(fileLocation);
-         translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+         translator.readAndTranslate(machine.getLabels(), machine.getProgram(), machine.getInstructionFactory());
          Assertions.assertEquals("[sub EAX EBX]", machine.getProgram().toString());
      }
 
@@ -54,7 +54,7 @@ public class TranslatorTest {
     void readAndTranslateSubInstructionWithLabel() throws Exception {
         String fileLocation = new File(baseTestFilePath + "readAndTranslateSubInstructionWithLabelTestResource.txt").getAbsolutePath();
         Translator translator = new Translator(fileLocation);
-        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram(), machine.getInstructionFactory());
         Assertions.assertEquals("[test: sub EAX EBX]", machine.getProgram().toString());
     }
 
@@ -62,7 +62,7 @@ public class TranslatorTest {
     void readAndTranslateMulInstructionNoLabel() throws Exception {
         String fileLocation = new File(baseTestFilePath + "readAndTranslateMulInstructionNoLabelTestResource.txt").getAbsolutePath();
         Translator translator = new Translator(fileLocation);
-        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram(), machine.getInstructionFactory());
         Assertions.assertEquals("[mul EAX EBX]", machine.getProgram().toString());
     }
 
@@ -70,7 +70,7 @@ public class TranslatorTest {
     void readAndTranslateMulInstructionWithLabel() throws Exception {
         String fileLocation = new File(baseTestFilePath + "readAndTranslateMulInstructionWithLabelTestResource.txt").getAbsolutePath();
         Translator translator = new Translator(fileLocation);
-        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram(), machine.getInstructionFactory());
         Assertions.assertEquals("[test: mul EAX EBX]", machine.getProgram().toString());
     }
 
@@ -78,7 +78,7 @@ public class TranslatorTest {
     void readAndTranslateDivInstructionNoLabel() throws Exception {
         String fileLocation = new File(baseTestFilePath + "readAndTranslateDivInstructionNoLabelTestResource.txt").getAbsolutePath();
         Translator translator = new Translator(fileLocation);
-        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram(), machine.getInstructionFactory());
         Assertions.assertEquals("[div EAX EBX]", machine.getProgram().toString());
     }
 
@@ -86,7 +86,7 @@ public class TranslatorTest {
     void readAndTranslateDivInstructionWithLabel() throws Exception {
         String fileLocation = new File(baseTestFilePath + "readAndTranslateDivInstructionWithLabelTestResource.txt").getAbsolutePath();
         Translator translator = new Translator(fileLocation);
-        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram(), machine.getInstructionFactory());
         Assertions.assertEquals("[test: div EAX EBX]", machine.getProgram().toString());
     }
 
@@ -94,7 +94,7 @@ public class TranslatorTest {
     void readAndTranslateOutInstructionNoLabel() throws Exception {
         String fileLocation = new File(baseTestFilePath + "readAndTranslateOutInstructionNoLabelTestResource.txt").getAbsolutePath();
         Translator translator = new Translator(fileLocation);
-        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram(), machine.getInstructionFactory());
         Assertions.assertEquals("[out EAX]", machine.getProgram().toString());
     }
 
@@ -102,7 +102,7 @@ public class TranslatorTest {
     void readAndTranslateOutInstructionWithLabel() throws Exception {
         String fileLocation = new File(baseTestFilePath + "readAndTranslateOutInstructionWithLabelTestResource.txt").getAbsolutePath();
         Translator translator = new Translator(fileLocation);
-        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram(), machine.getInstructionFactory());
         Assertions.assertEquals("[test: out EAX]", machine.getProgram().toString());
     }
 
@@ -110,7 +110,7 @@ public class TranslatorTest {
     void readAndTranslateMovInstructionNoLabel() throws Exception {
         String fileLocation = new File(baseTestFilePath + "readAndTranslateMovInstructionNoLabelTestResource.txt").getAbsolutePath();
         Translator translator = new Translator(fileLocation);
-        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram(), machine.getInstructionFactory());
         Assertions.assertEquals("[mov EAX 1]", machine.getProgram().toString());
     }
 
@@ -118,7 +118,7 @@ public class TranslatorTest {
     void readAndTranslateMovInstructionWithLabel() throws Exception {
         String fileLocation = new File(baseTestFilePath + "readAndTranslateMovInstructionWithLabelTestResource.txt").getAbsolutePath();
         Translator translator = new Translator(fileLocation);
-        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram(), machine.getInstructionFactory());
         Assertions.assertEquals("[test: mov EAX 1]", machine.getProgram().toString());
     }
 
@@ -126,7 +126,7 @@ public class TranslatorTest {
     void readAndTranslateJnzInstructionNoLabel() throws Exception {
         String fileLocation = new File(baseTestFilePath + "readAndTranslateJnzInstructionNoLabelTestResource.txt").getAbsolutePath();
         Translator translator = new Translator(fileLocation);
-        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram(), machine.getInstructionFactory());
         Assertions.assertEquals("[jnz EAX testLabel]", machine.getProgram().toString());
     }
 
@@ -134,7 +134,7 @@ public class TranslatorTest {
     void readAndTranslateJnzInstructionWithLabel() throws Exception {
         String fileLocation = new File(baseTestFilePath + "readAndTranslateJnzInstructionWithLabelTestResource.txt").getAbsolutePath();
         Translator translator = new Translator(fileLocation);
-        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram(), machine.getInstructionFactory());
         Assertions.assertEquals("[test: jnz EAX testLabel]", machine.getProgram().toString());
     }
 
@@ -142,7 +142,7 @@ public class TranslatorTest {
     void readAndTranslateMixedInstructionNoLabels() throws Exception {
         String fileLocation = new File(baseTestFilePath + "readAndTranslateMixedInstructionNoLabelsTestResource.txt").getAbsolutePath();
         Translator translator = new Translator(fileLocation);
-        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram(), machine.getInstructionFactory());
         Assertions.assertEquals("[mov EAX 1, mov EBX 3, add EAX EBX, mov ECX 1, sub EAX ECX]", machine.getProgram().toString());
     }
 
@@ -150,7 +150,7 @@ public class TranslatorTest {
     void readAndTranslateMixedInstructionAllLabels() throws Exception {
         String fileLocation = new File(baseTestFilePath + "readAndTranslateMixedInstructionAllLabelsTestResource.txt").getAbsolutePath();
         Translator translator = new Translator(fileLocation);
-        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram(), machine.getInstructionFactory());
         Assertions.assertEquals("[test1: mov EAX 1, test2: mov EBX 3, test3: add EAX EBX, test4: mov ECX 1, test5: sub EAX ECX]", machine.getProgram().toString());
     }
 
@@ -158,7 +158,7 @@ public class TranslatorTest {
     void readAndTranslateMixedInstructionMixedLabels() throws Exception {
         String fileLocation = new File(baseTestFilePath + "readAndTranslateMixedInstructionMixedLabelsTestResource.txt").getAbsolutePath();
         Translator translator = new Translator(fileLocation);
-        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram(), machine.getInstructionFactory());
         Assertions.assertEquals("[test1: mov EAX 1, mov EBX 3, add EAX EBX, test4: mov ECX 1, test5: sub EAX ECX]", machine.getProgram().toString());
     }
 

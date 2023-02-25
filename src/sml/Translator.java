@@ -29,7 +29,7 @@ public final class Translator {
     // prog (the program)
     // return "no errors were detected"
 
-    public void readAndTranslate(Labels labels, List<Instruction> program) throws IOException {
+    public void readAndTranslate(Labels labels, List<Instruction> program, InstructionFactory instructionFactory) throws IOException {
         try (var sc = new Scanner(new File(fileName), StandardCharsets.UTF_8)) {
             labels.reset();
             program.clear();
@@ -63,9 +63,14 @@ public final class Translator {
             return null;
 
         String opcode = scan();
-        String instructionClassName = "sml.instruction." + opcode.substring(0, 1).toUpperCase() + opcode.substring(1) + "Instruction";
+
+        //String instructionClassName = "sml.instruction." + opcode.substring(0, 1).toUpperCase() + opcode.substring(1) + "Instruction";
 
         try {
+
+
+
+            /*
             Class<?> instructionClass = Class.forName(instructionClassName);
             if (instructionClass.getSuperclass() == Instruction.class) {
                 Constructor<?>[] constructors = instructionClass.getConstructors();
@@ -92,7 +97,11 @@ public final class Translator {
                         }
                 }
                 return (Instruction) constructor.newInstance(constructorArgs);
+
+
             }
+
+             */
         } catch (IllegalArgumentException e) {
             System.out.println("Parameters supplied for " + opcode + " were incorrect");
         } catch (Exception e) {

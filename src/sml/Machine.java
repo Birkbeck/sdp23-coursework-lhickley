@@ -21,12 +21,15 @@ public final class Machine {
 
 	private final Registers registers;
 
+	private final InstructionFactory instructionFactory;
+
 	// The program counter; it contains the index (in program)
 	// of the next instruction to be executed.
 	private int programCounter = 0;
 
 	public Machine(Registers registers) {
 		this.registers = registers;
+		this.instructionFactory = InstructionFactory.getInstance();
 	}
 
 	/**
@@ -57,6 +60,9 @@ public final class Machine {
 		return this.registers;
 	}
 
+	public InstructionFactory getInstructionFactory() {
+		return instructionFactory;
+	}
 
 	/**
 	 * String representation of the program under execution.

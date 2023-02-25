@@ -17,7 +17,7 @@ public class Main {
 		try {
 			Translator t = new Translator(args[0]);
 			Machine m = new Machine(new Registers());
-			t.readAndTranslate(m.getLabels(), m.getProgram());
+			t.readAndTranslate(m.getLabels(), m.getProgram(), m.getInstructionFactory());
 
 			System.out.println("Here is the program; it has " + m.getProgram().size() + " instructions.");
 			System.out.println(m);
