@@ -1,11 +1,8 @@
 package sml;
 
 import java.io.*;
-import java.lang.reflect.Constructor;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-
-import static sml.Registers.Register;
 
 /**
  * This class ....
@@ -21,15 +18,18 @@ public final class Translator {
     // line contains the characters in the current line that's not been processed yet
     private String line = "";
 
+    private final InstructionFactory instructionFactory;
+
     public Translator(String fileName) {
         this.fileName = fileName;
+        this.instructionFactory = InstructionFactory.getInstance();
     }
 
     // translate the small program in the file into lab (the labels) and
     // prog (the program)
     // return "no errors were detected"
 
-    public void readAndTranslate(Labels labels, List<Instruction> program, InstructionFactory instructionFactory) throws IOException {
+    public void readAndTranslate(Labels labels, List<Instruction> program) throws IOException {
         try (var sc = new Scanner(new File(fileName), StandardCharsets.UTF_8)) {
             labels.reset();
             program.clear();
@@ -68,48 +68,11 @@ public final class Translator {
 
         while (line.length() > 0){
             String word = scan();
-
-
+            wordList.add(word);
         }
 
-        //String instructionClassName = "sml.instruction." + opcode.substring(0, 1).toUpperCase() + opcode.substring(1) + "Instruction";
-
         try {
-
-
-
-            /*
-            Class<?> instructionClass = Class.forName(instructionClassName);
-            if (instructionClass.getSuperclass() == Instruction.class) {
-                Constructor<?>[] constructors = instructionClass.getConstructors();
-
-                if (constructors.length != 1) {
-                    throw new RuntimeException("More than one constructor found for " + instructionClass.getName() +
-                            " only one should exist.");
-                }
-
-                Constructor<?>constructor = constructors[0];
-                Class<?>[] parameters = constructor.getParameterTypes();
-                Object[] constructorArgs = new Object[parameters.length];
-
-                constructorArgs[0] = label;
-
-                for (int i = 1; i < parameters.length; i++) {
-                        String arg = scan();
-                        if (parameters[i].toString().equals("interface sml.RegisterName")) {
-                            constructorArgs[i] = Register.valueOf(arg);
-                        } else if (parameters[i].toString().equals("int")) {
-                            constructorArgs[i] = Integer.parseInt(arg);
-                        } else {
-                            constructorArgs[i] = arg;
-                        }
-                }
-                return (Instruction) constructor.newInstance(constructorArgs);
-
-
-            }
-
-             */
+            return instructionFactory.create(label, opcode, wordList);
         } catch (IllegalArgumentException e) {
             System.out.println("Parameters supplied for " + opcode + " were incorrect");
         } catch (Exception e) {
