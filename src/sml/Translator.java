@@ -64,6 +64,14 @@ public final class Translator {
 
         String opcode = scan();
 
+        ArrayList<String> wordList = new ArrayList<>();
+
+        while (line.length() > 0){
+            String word = scan();
+
+
+        }
+
         //String instructionClassName = "sml.instruction." + opcode.substring(0, 1).toUpperCase() + opcode.substring(1) + "Instruction";
 
         try {
@@ -131,14 +139,12 @@ public final class Translator {
      */
     private String scan() {
         line = line.trim();
-
-        for (int i = 0; i < line.length(); i++)
-            if (Character.isWhitespace(line.charAt(i))) {
-                String word = line.substring(0, i);
-                line = line.substring(i);
-                return word;
-            }
-
+        ArrayList<String> splitLine = new ArrayList<>(Arrays.asList(line.split(" ")));
+        if (splitLine.size() > 0) {
+            String word = splitLine.remove(0);
+            line = String.join(" ", splitLine);
+            return word;
+        }
         return line;
     }
 }
