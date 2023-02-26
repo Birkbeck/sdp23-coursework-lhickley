@@ -31,7 +31,7 @@ public class InstructionFactory {
                 }
             } else {
                 if (args.size() != 2) {
-                    throw new RuntimeException("for " + opcode + " instructions, only two arguments are accepted after the opcode");
+                    throw new RuntimeException("For " + opcode + " instructions, only two arguments are accepted after the opcode");
                 }
             }
             switch (opcode) {
