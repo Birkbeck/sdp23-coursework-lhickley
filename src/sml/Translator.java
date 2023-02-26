@@ -20,9 +20,9 @@ public final class Translator {
 
     private final InstructionFactory instructionFactory;
 
-    public Translator(String fileName) {
+    public Translator(String fileName, InstructionFactory instructionFactory) {
         this.fileName = fileName;
-        this.instructionFactory = InstructionFactory.getInstance();
+        this.instructionFactory = instructionFactory;
     }
 
     // translate the small program in the file into lab (the labels) and
