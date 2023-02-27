@@ -50,12 +50,19 @@ public class InstructionFactory {
                 case "jnz":
                     return new JnzInstruction(label, Register.valueOf(args.get(0)), args.get(1));
                 default:
-                    throw new IllegalArgumentException("Unknown instruction: " + opcode);
+                    throw new IllegalArgumentException("Unknown instruction '" + opcode + "'");
             }
         } catch (IllegalArgumentException e) {
-            System.out.println("Illegal arguments passed for " + opcode);
-            System.out.println("Permitted register values are: ");
-            System.out.println(Arrays.toString(Register.values()));
+            String eString = e.toString();
+            System.out.println("Illegal arguments passed for '" + opcode + "'");
+            if (eString.contains("No enum constant")) {
+                System.out.println("Permitted register values are: ");
+                System.out.println(Arrays.toString(Register.values()));
+            } else if (eString.contains("Unknown instruction")) {
+                System.out.println("Unknown instruction '" + opcode + "'");
+            } else if (eString.contains("NumberFormatException")) {
+                System.out.println("Non integer value passed where integer value expected");
+            }
         }
         return null;
     }
