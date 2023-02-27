@@ -7,8 +7,6 @@ import java.util.Arrays;
 
 import static sml.Registers.Register;
 
-//TODO Add some error handling to all of this
-
 public class InstructionFactory {
 
     private static InstructionFactory instance = null;
