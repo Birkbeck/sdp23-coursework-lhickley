@@ -32,24 +32,16 @@ public class InstructionFactory {
                     throw new RuntimeException("For " + opcode + " instructions, only two arguments are accepted after the opcode");
                 }
             }
-            switch (opcode) {
-                case "add":
-                    return new AddInstruction(label, Register.valueOf(args.get(0)), Register.valueOf(args.get(1)));
-                case "sub":
-                    return new SubInstruction(label, Register.valueOf(args.get(0)), Register.valueOf(args.get(1)));
-                case "mul":
-                    return new MulInstruction(label, Register.valueOf(args.get(0)), Register.valueOf(args.get(1)));
-                case "div":
-                    return new DivInstruction(label, Register.valueOf(args.get(0)), Register.valueOf(args.get(1)));
-                case "out":
-                    return new OutInstruction(label, Register.valueOf(args.get(0)));
-                case "mov":
-                    return new MovInstruction(label, Register.valueOf(args.get(0)), Integer.parseInt(args.get(1)));
-                case "jnz":
-                    return new JnzInstruction(label, Register.valueOf(args.get(0)), args.get(1));
-                default:
-                    throw new IllegalArgumentException("Unknown instruction '" + opcode + "'");
-            }
+            return switch (opcode) {
+                case "add" -> new AddInstruction(label, Register.valueOf(args.get(0)), Register.valueOf(args.get(1)));
+                case "sub" -> new SubInstruction(label, Register.valueOf(args.get(0)), Register.valueOf(args.get(1)));
+                case "mul" -> new MulInstruction(label, Register.valueOf(args.get(0)), Register.valueOf(args.get(1)));
+                case "div" -> new DivInstruction(label, Register.valueOf(args.get(0)), Register.valueOf(args.get(1)));
+                case "out" -> new OutInstruction(label, Register.valueOf(args.get(0)));
+                case "mov" -> new MovInstruction(label, Register.valueOf(args.get(0)), Integer.parseInt(args.get(1)));
+                case "jnz" -> new JnzInstruction(label, Register.valueOf(args.get(0)), args.get(1));
+                default -> throw new IllegalArgumentException("Unknown instruction '" + opcode + "'");
+            };
         } catch (IllegalArgumentException e) {
             String eString = e.toString();
             System.out.println("Illegal arguments passed for '" + opcode + "'");
