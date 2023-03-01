@@ -90,4 +90,31 @@ public class DivInstructionTest {
         Assertions.assertEquals("test: div EAX EBX", toStringResult);
     }
 
+    //Java will treat an unset int as a 0, as int is a primitive and so can't be set to null
+    //Here we confirm that this ends up being treated as such when doing a division
+    @Test
+    void attemptToUseNullRegisterDenominator() {
+        registers.set(EAX, 1);
+        Instruction instruction = new DivInstruction(null, EAX, EBX);
+        instruction.execute(machine);
+        Assertions.assertEquals(0, registers.get(EAX));
+    }
+
+    //Java will treat an unset int as a 0, as int is a primitive and so can't be set to null
+    //Here we confirm that this ends up being treated as such when doing a division
+    @Test
+    void attemptToUseNullRegisterNumerator() {
+        registers.set(EBX, 1);
+        Instruction instruction = new DivInstruction(null, EAX, EBX);
+        instruction.execute(machine);
+        Assertions.assertEquals(0, registers.get(EAX));
+    }
+
+    @Test
+    void attemptToUseNullRegisterNumeratorAndDenominator() {
+        Instruction instruction = new DivInstruction(null, EAX, EBX);
+        instruction.execute(machine);
+        Assertions.assertEquals(0, registers.get(EAX));
+    }
+
 }
