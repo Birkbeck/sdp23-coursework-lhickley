@@ -73,7 +73,7 @@ public class MulInstructionTest {
     }
 
     //Java will treat an unset int as a 0, as int is a primitive and so can't be set to null
-    //Here we confirm that this ends up being treated as such when doing a muliplication
+    //Here we confirm that this ends up being treated as such when doing a multiplication
     @Test
     void attemptToUseNullRegister() {
         registers.set(EAX, 1);
