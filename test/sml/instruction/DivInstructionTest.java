@@ -8,6 +8,7 @@ import sml.Instruction;
 import sml.Machine;
 import sml.Registers;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static sml.Registers.Register.*;
 
 public class DivInstructionTest {
@@ -96,8 +97,12 @@ public class DivInstructionTest {
     void attemptToUseNullRegisterDenominator() {
         registers.set(EAX, 1);
         Instruction instruction = new DivInstruction(null, EAX, EBX);
-        instruction.execute(machine);
-        Assertions.assertEquals(0, registers.get(EAX));
+        Exception exception = assertThrows(RuntimeException.class, () -> instruction.execute(machine));
+        String expectedMessage = "The program is attempting to divide by zero in the register EBX.\n" +
+                "This is not permitted, as it is not a valid arithmetic operation.\n" +
+                "Please confirm that the register EBX has been correctly set.";
+        String actualMessage = exception.getMessage();
+        Assertions.assertEquals(expectedMessage, actualMessage);
     }
 
     //Java will treat an unset int as a 0, as int is a primitive and so can't be set to null
@@ -113,8 +118,12 @@ public class DivInstructionTest {
     @Test
     void attemptToUseNullRegisterNumeratorAndDenominator() {
         Instruction instruction = new DivInstruction(null, EAX, EBX);
-        instruction.execute(machine);
-        Assertions.assertEquals(0, registers.get(EAX));
+        Exception exception = assertThrows(RuntimeException.class, () -> instruction.execute(machine));
+        String expectedMessage = "The program is attempting to divide by zero in the register EBX.\n" +
+                "This is not permitted, as it is not a valid arithmetic operation.\n" +
+                "Please confirm that the register EBX has been correctly set.";
+        String actualMessage = exception.getMessage();
+        Assertions.assertEquals(expectedMessage, actualMessage);
     }
 
 }

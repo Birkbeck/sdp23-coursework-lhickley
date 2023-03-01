@@ -20,6 +20,11 @@ public class DivInstruction extends Instruction {
     public int execute(Machine m) {
         int value1 = m.getRegisters().get(result);
         int value2 = m.getRegisters().get(source);
+        if (value2 == 0) {
+            throw new RuntimeException("The program is attempting to divide by zero in the register " + source + ".\n" +
+                    "This is not permitted, as it is not a valid arithmetic operation.\n" +
+                    "Please confirm that the register " + source + " has been correctly set.");
+        }
         m.getRegisters().set(result, value1 / value2);
         return NORMAL_PROGRAM_COUNTER_UPDATE;
     }
