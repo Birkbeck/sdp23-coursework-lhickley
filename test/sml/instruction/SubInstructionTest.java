@@ -80,4 +80,14 @@ public class SubInstructionTest {
         String toStringResult = instruction.toString();
         Assertions.assertEquals("test: sub EAX EBX", toStringResult);
     }
+
+    //Java will treat an unset int as a 0, as int is a primitive and so can't be set to null
+    //Here we confirm that this ends up being treated as such when doing an addition
+    @Test
+    void attemptToUseNullRegister() {
+        registers.set(EAX, 1);
+        Instruction instruction = new SubInstruction(null, EAX, EBX);
+        instruction.execute(machine);
+        Assertions.assertEquals(1, registers.get(EAX));
+    }
 }
