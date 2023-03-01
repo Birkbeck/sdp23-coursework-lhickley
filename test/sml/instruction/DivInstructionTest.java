@@ -98,9 +98,10 @@ public class DivInstructionTest {
         registers.set(EAX, 1);
         Instruction instruction = new DivInstruction(null, EAX, EBX);
         Exception exception = assertThrows(RuntimeException.class, () -> instruction.execute(machine));
-        String expectedMessage = "The program is attempting to divide by zero in the register EBX.\n" +
-                "This is not permitted, as it is not a valid arithmetic operation.\n" +
-                "Please confirm that the register EBX has been correctly set.";
+        String expectedMessage = """
+                The program is attempting to divide by zero in the register EBX.
+                This is not permitted, as it is not a valid arithmetic operation.
+                Please confirm that the register EBX has been correctly set.""";
         String actualMessage = exception.getMessage();
         Assertions.assertEquals(expectedMessage, actualMessage);
     }
@@ -119,9 +120,10 @@ public class DivInstructionTest {
     void attemptToUseNullRegisterNumeratorAndDenominator() {
         Instruction instruction = new DivInstruction(null, EAX, EBX);
         Exception exception = assertThrows(RuntimeException.class, () -> instruction.execute(machine));
-        String expectedMessage = "The program is attempting to divide by zero in the register EBX.\n" +
-                "This is not permitted, as it is not a valid arithmetic operation.\n" +
-                "Please confirm that the register EBX has been correctly set.";
+        String expectedMessage = """
+                The program is attempting to divide by zero in the register EBX.
+                This is not permitted, as it is not a valid arithmetic operation.
+                Please confirm that the register EBX has been correctly set.""";
         String actualMessage = exception.getMessage();
         Assertions.assertEquals(expectedMessage, actualMessage);
     }
