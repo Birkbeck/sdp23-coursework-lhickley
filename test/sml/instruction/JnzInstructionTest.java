@@ -61,7 +61,7 @@ public class JnzInstructionTest {
     }
 
     @Test
-    void executeJumpToNonExtantRegister() {
+    void executeJumpToNonExtantLabel() {
         registers.set(EAX, 5);
         Instruction instruction = new JnzInstruction(null, EAX, "test");
         Exception exception = assertThrows(RuntimeException.class, () -> instruction.execute(machine));
