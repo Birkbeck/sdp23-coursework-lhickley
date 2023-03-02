@@ -84,9 +84,6 @@ public final class Translator {
             System.out.println("Unknown instruction: " + opcode);
         }
 
-        // TODO: Next, use dependency injection to allow this machine class
-        //       to work with different sets of opcodes (different CPUs)
-
         return null;
     }
 
