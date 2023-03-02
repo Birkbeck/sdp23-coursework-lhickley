@@ -21,7 +21,6 @@ public class TranslatorTest {
         machine = new Machine(new Registers());
         registers = machine.getRegisters();
         baseTestFilePath = "./sdp23-coursework-lhickley/test/resources/";
-        //...
     }
 
     @AfterEach
