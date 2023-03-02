@@ -110,7 +110,7 @@ public class InstructionFactoryTest {
         instructionFactory.create(null, "mov", args);
         Assertions.assertEquals("""
                 Illegal arguments passed for 'mov'
-                Non integer value passed where integer value expected.
+                Value passed was not an acceptable integer value.
                 Value stored in registers must be between -2,147,483,648 and 2,147,483,647 inclusive.""", outputStreamCaptor.toString().trim());
     }
 
@@ -129,7 +129,7 @@ public class InstructionFactoryTest {
         instructionFactory.create(null, "mov", args);
         Assertions.assertEquals("""
                 Illegal arguments passed for 'mov'
-                Non integer value passed where integer value expected.
+                Value passed was not an acceptable integer value.
                 Value stored in registers must be between -2,147,483,648 and 2,147,483,647 inclusive.""", outputStreamCaptor.toString().trim());
     }
 
@@ -140,8 +140,55 @@ public class InstructionFactoryTest {
         instructionFactory.create(null, "mov", args);
         Assertions.assertEquals("""
                 Illegal arguments passed for 'mov'
-                Non integer value passed where integer value expected.
+                Value passed was not an acceptable integer value.
                 Value stored in registers must be between -2,147,483,648 and 2,147,483,647 inclusive.""", outputStreamCaptor.toString().trim());
+    }
+
+    @Test
+    void correctAddCreation() {
+        args.add("EAX");
+        args.add("EBX");
+        Instruction instruction = instructionFactory.create(null, "add", args);
+        Assertions.assertEquals("class sml.instruction.AddInstruction", instruction.getClass().toString());
+    }
+
+    @Test
+    void correctSubCreation() {
+        args.add("EAX");
+        args.add("EBX");
+        Instruction instruction = instructionFactory.create(null, "sub", args);
+        Assertions.assertEquals("class sml.instruction.SubInstruction", instruction.getClass().toString());
+    }
+
+    @Test
+    void correctMulCreation() {
+        args.add("EAX");
+        args.add("EBX");
+        Instruction instruction = instructionFactory.create(null, "mul", args);
+        Assertions.assertEquals("class sml.instruction.MulInstruction", instruction.getClass().toString());
+    }
+
+    @Test
+    void correctDivCreation() {
+        args.add("EAX");
+        args.add("EBX");
+        Instruction instruction = instructionFactory.create(null, "div", args);
+        Assertions.assertEquals("class sml.instruction.DivInstruction", instruction.getClass().toString());
+    }
+
+    @Test
+    void correctOutCreation() {
+        args.add("EAX");
+        Instruction instruction = instructionFactory.create(null, "out", args);
+        Assertions.assertEquals("class sml.instruction.OutInstruction", instruction.getClass().toString());
+    }
+
+    @Test
+    void correctJnzCreation() {
+        args.add("EAX");
+        args.add("test");
+        Instruction instruction = instructionFactory.create(null, "jnz", args);
+        Assertions.assertEquals("class sml.instruction.JnzInstruction", instruction.getClass().toString());
     }
 
 

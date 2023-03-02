@@ -51,7 +51,7 @@ public class InstructionFactory {
             } else if (eString.contains("Unknown instruction")) {
                 System.out.println("Unknown instruction '" + opcode + "'");
             } else if (eString.contains("NumberFormatException")) {
-                System.out.println("Non integer value passed where integer value expected.");
+                System.out.println("Value passed was not an acceptable integer value.");
                 System.out.println("Value stored in registers must be between -2,147,483,648 and 2,147,483,647 inclusive.");
             }
         }
