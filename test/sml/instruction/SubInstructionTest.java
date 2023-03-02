@@ -8,6 +8,7 @@ import sml.Instruction;
 import sml.Machine;
 import sml.Registers;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static sml.Registers.Register.*;
 
 public class SubInstructionTest {
@@ -89,5 +90,33 @@ public class SubInstructionTest {
         Instruction instruction = new SubInstruction(null, EAX, EBX);
         instruction.execute(machine);
         Assertions.assertEquals(1, registers.get(EAX));
+    }
+
+    @Test
+    void executeMaxIntegerOverflow() {
+        registers.set(EAX, 2147483647);
+        registers.set(EBX, -1);
+        Instruction instruction = new SubInstruction(null, EAX, EBX);
+        Exception exception = assertThrows(ArithmeticException.class, () -> instruction.execute(machine));
+        String expectedMessage = """
+            The combination of values 2147483647 and -1 stored in the registers EAX and EBX using the opcode 'sub' cannot be performed.
+            This will lead to a value overflow in the EAX register.
+            The maximum value which can be stored is 2,147,483,647""";
+        String actualMessage = exception.getMessage();
+        Assertions.assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test
+    void executeMinIntUnderflow() {
+        registers.set(EAX, -2147483648);
+        registers.set(EBX, 1);
+        Instruction instruction = new SubInstruction(null, EAX, EBX);
+        Exception exception = assertThrows(ArithmeticException.class, () -> instruction.execute(machine));
+        String expectedMessage = """
+            The combination of values -2147483648 and 1 stored in the registers EAX and EBX using the opcode 'sub' cannot be performed.
+            This will lead to a value underflow in the EAX register.
+            The minimum value which can be stored is -2,147,483,648""";
+        String actualMessage = exception.getMessage();
+        Assertions.assertEquals(expectedMessage, actualMessage);
     }
 }
