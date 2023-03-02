@@ -1,10 +1,8 @@
 package sml.instruction;
 
-import sml.Instruction;
-import sml.Machine;
-import sml.RegisterName;
+import sml.*;
 
-public class MulInstruction extends Instruction {
+public class MulInstruction extends Instruction implements UnderOverFlowHandling {
     private final RegisterName result;
     private final RegisterName source;
 
@@ -20,7 +18,10 @@ public class MulInstruction extends Instruction {
     public int execute(Machine m) {
         int value1 = m.getRegisters().get(result);
         int value2 = m.getRegisters().get(source);
-        m.getRegisters().set(result, value1 * value2);
+        int res = value1 * value2;
+        UnderOverFlowHelper helper = (a, b, c) -> (int)(a * b) != ((long)a * (long)b);
+        handleOverUnderFlow(value1, value2, res, result.toString(), source.toString(), opcode, helper);
+        m.getRegisters().set(result, res);
         return NORMAL_PROGRAM_COUNTER_UPDATE;
     }
 
