@@ -177,6 +177,19 @@ public class TranslatorTest {
         Assertions.assertEquals(expectedMessage, outputStreamCaptor.toString().trim());
     }
 
+    //We're only testing that an error gets thrown from the class below this one, so we don't need to run this for every instruction type.
+    @Test
+    void readAndTranslateIncorrectParametersSuppliedAdd() throws IOException {
+        String fileLocation = new File(baseTestFilePath + "readAndTranslateIncorrectParametersSuppliedAdd.txt").getAbsolutePath();
+        Translator translator = new Translator(fileLocation, InstructionFactory.getInstance());
+        ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStreamCaptor));
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        String expectedMessage = "For add instructions, only two arguments are accepted after the opcode";
+        Assertions.assertEquals(expectedMessage, outputStreamCaptor.toString().trim());
+    }
+
+
 
 
 }

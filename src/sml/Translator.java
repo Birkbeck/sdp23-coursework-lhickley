@@ -80,7 +80,11 @@ public final class Translator {
             return instructionFactory.create(label, opcode, wordList);
         } catch (IllegalArgumentException e) {
             System.out.println("Parameters supplied for " + opcode + " were incorrect");
+        } catch (RuntimeException e) {
+            //Exceptions here are thrown from our class below, so we want to just report those messages pleasantly.
+            System.out.println(e.getMessage());
         } catch (Exception e) {
+            System.out.println(e);
             System.out.println("Unknown instruction: " + opcode);
         }
 
