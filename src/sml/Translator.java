@@ -42,8 +42,12 @@ public final class Translator {
                 Instruction instruction = getInstruction(label);
                 if (instruction != null) {
                     if (label != null)
-                        //TODO add handle here to throw an error if duplicate label is supplied
-                        labels.addLabel(label, program.size());
+                        try {
+                            labels.addLabel(label, program.size());
+                        } catch (RuntimeException e) {
+                            System.out.println("Duplicate labels are not permitted.");
+                            System.out.println("The label '" + label + "' has been supplied earlier in the program source file.");
+                        }
                     program.add(instruction);
                 }
             }

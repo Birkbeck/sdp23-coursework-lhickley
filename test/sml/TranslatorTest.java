@@ -5,7 +5,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import java.io.File;
+import java.io.IOException;
 
 public class TranslatorTest {
     private Machine machine;
@@ -161,5 +165,19 @@ public class TranslatorTest {
         translator.readAndTranslate(machine.getLabels(), machine.getProgram());
         Assertions.assertEquals("[test1: mov EAX 1, mov EBX 3, add EAX EBX, test4: mov ECX 1, test5: sub EAX ECX]", machine.getProgram().toString());
     }
+
+    @Test
+    void readAndTranslateDuplicateLabel() throws IOException {
+        String fileLocation = new File(baseTestFilePath + "readAndTranslateMixedInstructionDuplicateLabelsTestResource.txt").getAbsolutePath();
+        Translator translator = new Translator(fileLocation, InstructionFactory.getInstance());
+        ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStreamCaptor));
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        String expectedMessage = "Duplicate labels are not permitted.\n" +
+                "The label 'test3' has been supplied earlier in the program source file.";
+        Assertions.assertEquals(expectedMessage, outputStreamCaptor.toString().trim());
+    }
+
+
 
 }

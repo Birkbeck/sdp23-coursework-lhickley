@@ -1,0 +1,6 @@
+test1: mov EAX 1
+test2: mov EBX 3
+test3: add EAX EBX
+test3: mov ECX 1
+test4: mov ECX 1
+test5: sub EAX ECX
