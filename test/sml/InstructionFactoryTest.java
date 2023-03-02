@@ -108,8 +108,40 @@ public class InstructionFactoryTest {
         args.add("EAX");
         args.add("test");
         instructionFactory.create(null, "mov", args);
-        Assertions.assertEquals("Illegal arguments passed for 'mov'\n" +
-        "Non integer value passed where integer value expected", outputStreamCaptor.toString().trim());
+        Assertions.assertEquals("""
+                Illegal arguments passed for 'mov'
+                Non integer value passed where integer value expected.
+                Value stored in registers must be between -2,147,483,648 and 2,147,483,647 inclusive.""", outputStreamCaptor.toString().trim());
+    }
+
+    @Test
+    void correctMovCreation() {
+        args.add("EAX");
+        args.add("1");
+        Instruction instruction = instructionFactory.create(null, "mov", args);
+        Assertions.assertEquals("class sml.instruction.MovInstruction", instruction.getClass().toString());
+    }
+
+    @Test
+    void overflowIntegerPassToMov() {
+        args.add("EAX");
+        args.add("2147483648");
+        instructionFactory.create(null, "mov", args);
+        Assertions.assertEquals("""
+                Illegal arguments passed for 'mov'
+                Non integer value passed where integer value expected.
+                Value stored in registers must be between -2,147,483,648 and 2,147,483,647 inclusive.""", outputStreamCaptor.toString().trim());
+    }
+
+    @Test
+    void underflowIntegerPassToMov() {
+        args.add("EAX");
+        args.add("-2147483649");
+        instructionFactory.create(null, "mov", args);
+        Assertions.assertEquals("""
+                Illegal arguments passed for 'mov'
+                Non integer value passed where integer value expected.
+                Value stored in registers must be between -2,147,483,648 and 2,147,483,647 inclusive.""", outputStreamCaptor.toString().trim());
     }
 
 
