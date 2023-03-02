@@ -9,6 +9,7 @@ import sml.Labels;
 import sml.Machine;
 import sml.Registers;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static sml.Registers.Register.EAX;
 
 public class JnzInstructionTest {
@@ -57,5 +58,17 @@ public class JnzInstructionTest {
         Instruction instruction = new JnzInstruction("test", EAX, "jumpToTest");
         String toStringResult = instruction.toString();
         Assertions.assertEquals("test: jnz EAX jumpToTest", toStringResult);
+    }
+
+    @Test
+    void executeJumpToNonExtantRegister() {
+        registers.set(EAX, 5);
+        Instruction instruction = new JnzInstruction(null, EAX, "test");
+        Exception exception = assertThrows(RuntimeException.class, () -> instruction.execute(machine));
+
+        String expectedMessage = "The label test does not exist!  Please check the file containing the instruction set.";
+        String actualMessage = exception.getMessage();
+
+        Assertions.assertEquals(expectedMessage, actualMessage);
     }
 }

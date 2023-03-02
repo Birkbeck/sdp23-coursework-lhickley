@@ -42,7 +42,7 @@ public final class Labels {
 		 * and this is outside the size of 'program', a NullPointerException will be thrown.
 		 */
 		if (!labels.containsKey(label)) {
-			throw new RuntimeException("The label " + label + " does not exist!");
+			throw new RuntimeException("The label " + label + " does not exist!  Please check the file containing the instruction set.");
 		} else {
 			return labels.get(label);
 		}
