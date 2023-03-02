@@ -25,8 +25,8 @@ public class AddInstruction extends Instruction implements UnderOverFlowHandling
 		int value1 = m.getRegisters().get(result);
 		int value2 = m.getRegisters().get(source);
 		int res = value1 + value2;
-		UnderOverFlowHelper operation = (a, b, c) -> ((a ^ c) & (b ^ c)) < 0;
-		handleOverUnderFlow(value1, value2, res, result.toString(), source.toString(), opcode, operation);
+		UnderOverFlowHelper helper = (a, b, c) -> ((a ^ c) & (b ^ c)) < 0;
+		handleOverUnderFlow(value1, value2, res, result.toString(), source.toString(), opcode, helper);
 		m.getRegisters().set(result, res);
 		return NORMAL_PROGRAM_COUNTER_UPDATE;
 	}
