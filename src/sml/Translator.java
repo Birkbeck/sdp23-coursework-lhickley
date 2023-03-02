@@ -84,8 +84,8 @@ public final class Translator {
             //Exceptions here are thrown from our class below, so we want to just report those messages pleasantly.
             System.out.println(e.getMessage());
         } catch (Exception e) {
-            System.out.println(e);
-            System.out.println("Unknown instruction: " + opcode);
+            //This should be impossible to reach, but we still want to handle it just incase.
+            System.out.println("An error has occurred: " + e.getMessage());
         }
 
         return null;
