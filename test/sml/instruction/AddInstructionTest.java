@@ -82,10 +82,25 @@ class AddInstructionTest {
     Instruction instruction = new AddInstruction(null, EAX, EBX);
     Exception exception = assertThrows(ArithmeticException.class, () -> instruction.execute(machine));
     String expectedMessage = """
-            The addition of values 2147483647 and 1 stored in the registers EAX and EBX cannot be summed.
+            The addition of values 2147483647 and 1 stored in the registers EAX and EBX cannot be performed.
             This will lead to a value overflow in the EAX register.
             The maximum value which can be summed to is 2,147,483,647""";
     String actualMessage = exception.getMessage();
     Assertions.assertEquals(expectedMessage, actualMessage);
   }
+
+  @Test
+  void executeMinIntUnderflow() {
+    registers.set(EAX, -2147483648);
+    registers.set(EBX, -1);
+    Instruction instruction = new AddInstruction(null, EAX, EBX);
+    Exception exception = assertThrows(ArithmeticException.class, () -> instruction.execute(machine));
+    String expectedMessage = """
+            The addition of values -2147483648 and -1 stored in the registers EAX and EBX cannot be performed.
+            This will lead to a value underflow in the EAX register.
+            The minimum value which can be summed to is -2,147,483,648""";
+    String actualMessage = exception.getMessage();
+    Assertions.assertEquals(expectedMessage, actualMessage);
+  }
+
 }
