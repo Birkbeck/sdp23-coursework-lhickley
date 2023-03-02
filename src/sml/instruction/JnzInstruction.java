@@ -23,6 +23,7 @@ public class JnzInstruction extends Instruction {
             return NORMAL_PROGRAM_COUNTER_UPDATE;
         } else {
             Labels labels = m.getLabels();
+            //TODO add handle here for non existent labels
             return labels.getAddress(labelToJumpTo);
         }
     }
