@@ -29,7 +29,7 @@ public class AddInstruction extends Instruction implements UnderOverFlowHandling
 		int value2 = m.getRegisters().get(source);
 		int res = value1 + value2;
 		handleOverUnderFlow(value1, value2, res, result.toString(), source.toString(), opcode);
-		m.getRegisters().set(result, value1 + value2);
+		m.getRegisters().set(result, res);
 		return NORMAL_PROGRAM_COUNTER_UPDATE;
 	}
 
