@@ -1,8 +1,11 @@
 package sml;
 
+import java.util.function.Function;
+import java.util.function.IntBinaryOperator;
+
 public interface UnderOverFlowHandling {
-    default void handleOverUnderFlow(int value1, int value2, int res, String result, String source, String opcode) {
-        if (((value1 ^ res) & (value2 ^ res)) < 0) {
+    default void handleOverUnderFlow(int value1, int value2, int res, String result, String source, String opcode, UnderOverFlowHelper helper) {
+        if (helper.doOperation(value1, value2, res)) {
             if (res < 0) {
                 throw new ArithmeticException("The combination of values " + value1 + " and " + value2 + " stored in the " +
                         "registers " + result + " and " + source + " using the opcode '" + opcode + "' cannot be performed.\nThis will lead to a value " +

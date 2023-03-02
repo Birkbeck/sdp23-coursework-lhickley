@@ -1,9 +1,6 @@
 package sml.instruction;
 
-import sml.Instruction;
-import sml.Machine;
-import sml.RegisterName;
-import sml.UnderOverFlowHandling;
+import sml.*;
 
 // TODO: write a JavaDoc for the class
 
@@ -28,7 +25,8 @@ public class AddInstruction extends Instruction implements UnderOverFlowHandling
 		int value1 = m.getRegisters().get(result);
 		int value2 = m.getRegisters().get(source);
 		int res = value1 + value2;
-		handleOverUnderFlow(value1, value2, res, result.toString(), source.toString(), opcode);
+		UnderOverFlowHelper operation = (a, b, c) -> ((a ^ c) & (b ^ c)) < 0;
+		handleOverUnderFlow(value1, value2, res, result.toString(), source.toString(), opcode, operation);
 		m.getRegisters().set(result, res);
 		return NORMAL_PROGRAM_COUNTER_UPDATE;
 	}
