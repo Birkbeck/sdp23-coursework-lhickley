@@ -195,13 +195,15 @@ public class TranslatorTest {
     @Test
     void readAndTranslateIncorrectParameterSuppliedMov() throws IOException {
         String fileLocation = new File(baseTestFilePath + "readAndTranslateIncorrectParameterSuppliedMov.txt").getAbsolutePath();
-        Translator translator = new Translator(fileLocation);
+        Translator translator = new Translator(fileLocation, InstructionFactory.getInstance());
         ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStreamCaptor));
         translator.readAndTranslate(machine.getLabels(), machine.getProgram());
         String expectedMessage = """
                 An exception occurred while reading the program for the file.  Details:
-                Parameters supplied for mov were incorrect
+                Illegal arguments passed for 'mov'
+                Value passed was not an acceptable integer value.
+                Value stored in registers must be between -2,147,483,648 and 2,147,483,647 inclusive.
                 The program may become corrupted and the input file should be reviewed""";
         Assertions.assertEquals(expectedMessage, outputStreamCaptor.toString().trim());
     }
