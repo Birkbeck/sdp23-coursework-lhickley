@@ -45,7 +45,6 @@ public final class Registers {
         return registers.get((Register)register);
     }
 
-    //TODO Needs testing
     @Override
     public boolean equals(Object o) {
         if (o instanceof Registers r) {
