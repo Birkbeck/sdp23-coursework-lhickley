@@ -33,7 +33,7 @@ public class MachineTest {
     @Test
     void executeMachineCorrectlyNoLabels() throws IOException {
         String fileLocation = new File(baseTestFilePath + "readAndTranslateMixedInstructionNoLabelsTestResource.txt").getAbsolutePath();
-        Translator translator = new Translator(fileLocation, InstructionFactory.getInstance());
+        Translator translator = new Translator(fileLocation);
         translator.readAndTranslate(machine.getLabels(), machine.getProgram());
         machine.execute();
         Assertions.assertEquals(3, registers.get(EAX));
@@ -44,7 +44,7 @@ public class MachineTest {
     @Test
     void executeMachineCorrectlyMixedLabels() throws IOException {
         String fileLocation = new File(baseTestFilePath + "readAndTranslateMixedInstructionMixedLabelsTestResource.txt").getAbsolutePath();
-        Translator translator = new Translator(fileLocation, InstructionFactory.getInstance());
+        Translator translator = new Translator(fileLocation);
         translator.readAndTranslate(machine.getLabels(), machine.getProgram());
         machine.execute();
         Assertions.assertEquals(3, registers.get(EAX));
@@ -55,7 +55,7 @@ public class MachineTest {
     @Test
     void executeMachineCorrectlyAllLabels() throws IOException {
         String fileLocation = new File(baseTestFilePath + "readAndTranslateMixedInstructionMixedLabelsTestResource.txt").getAbsolutePath();
-        Translator translator = new Translator(fileLocation, InstructionFactory.getInstance());
+        Translator translator = new Translator(fileLocation);
         translator.readAndTranslate(machine.getLabels(), machine.getProgram());
         machine.execute();
         Assertions.assertEquals(3, registers.get(EAX));
@@ -66,7 +66,7 @@ public class MachineTest {
     @Test
     void executeMachineTestMixOfInstructions() throws IOException {
         String fileLocation = new File(baseTestFilePath + "MixedInstructions.sml").getAbsolutePath();
-        Translator translator = new Translator(fileLocation, InstructionFactory.getInstance());
+        Translator translator = new Translator(fileLocation);
         translator.readAndTranslate(machine.getLabels(), machine.getProgram());
         ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStreamCaptor));
@@ -77,16 +77,14 @@ public class MachineTest {
     @Test
     void executeMachineBrokenInputFirstPosition() throws IOException {
         String fileLocation = new File(baseTestFilePath + "PoorlyFormedInputFirstPosition.sml").getAbsolutePath();
-        Translator translator = new Translator(fileLocation, InstructionFactory.getInstance());
+        Translator translator = new Translator(fileLocation);
         ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStreamCaptor));
         translator.readAndTranslate(machine.getLabels(), machine.getProgram());
         machine.execute();
         String expectedMessage = """
                 An exception occurred while reading the program for the file.  Details:
-                Illegal arguments passed for 'mov'
-                Permitted register values are:\s
-                [EAX, EBX, ECX, EDX, ESP, EBP, ESI, EDI]
+                Parameters supplied for mov were incorrect
                 The program may become corrupted and the input file should be reviewed""";
         Assertions.assertEquals(expectedMessage, outputStreamCaptor.toString().trim());
     }
@@ -94,16 +92,14 @@ public class MachineTest {
     @Test
     void executeMachineBrokenInputSecondPosition() throws IOException {
         String fileLocation = new File(baseTestFilePath + "PoorlyFormedInputSecondPosition.sml").getAbsolutePath();
-        Translator translator = new Translator(fileLocation, InstructionFactory.getInstance());
+        Translator translator = new Translator(fileLocation);
         ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStreamCaptor));
         translator.readAndTranslate(machine.getLabels(), machine.getProgram());
         machine.execute();
         String expectedMessage = """
                 An exception occurred while reading the program for the file.  Details:
-                Illegal arguments passed for 'mov'
-                Permitted register values are:\s
-                [EAX, EBX, ECX, EDX, ESP, EBP, ESI, EDI]
+                Parameters supplied for mov were incorrect
                 The program may become corrupted and the input file should be reviewed""";
         Assertions.assertEquals(expectedMessage, outputStreamCaptor.toString().trim());
     }
@@ -113,7 +109,7 @@ public class MachineTest {
         Machine m1 = new Machine(new Registers());
         Machine m2 = new Machine(new Registers());
         String fileLocation = new File(baseTestFilePath + "MixedInstructions.sml").getAbsolutePath();
-        Translator translator = new Translator(fileLocation, InstructionFactory.getInstance());
+        Translator translator = new Translator(fileLocation);
         translator.readAndTranslate(m1.getLabels(), m1.getProgram());
         translator.readAndTranslate(m2.getLabels(), m2.getProgram());
         Assertions.assertEquals(m1.hashCode(), m2.hashCode());
@@ -124,7 +120,7 @@ public class MachineTest {
         Machine m1 = new Machine(new Registers());
         Machine m2 = new Machine(new Registers());
         String fileLocation = new File(baseTestFilePath + "MixedInstructions.sml").getAbsolutePath();
-        Translator translator = new Translator(fileLocation, InstructionFactory.getInstance());
+        Translator translator = new Translator(fileLocation);
         translator.readAndTranslate(m1.getLabels(), m1.getProgram());
         translator.readAndTranslate(m2.getLabels(), m2.getProgram());
         Assertions.assertTrue(m1.equals(m2));
@@ -135,9 +131,9 @@ public class MachineTest {
         Machine m1 = new Machine(new Registers());
         Machine m2 = new Machine(new Registers());
         String fileLocation1 = new File(baseTestFilePath + "MixedInstructions.sml").getAbsolutePath();
-        Translator translator1 = new Translator(fileLocation1, InstructionFactory.getInstance());
+        Translator translator1 = new Translator(fileLocation1);
         String fileLocation2 = new File(baseTestFilePath + "readAndTranslateMixedInstructionMixedLabelsTestResource.txt").getAbsolutePath();
-        Translator translator2 = new Translator(fileLocation2, InstructionFactory.getInstance());
+        Translator translator2 = new Translator(fileLocation2);
         translator1.readAndTranslate(m1.getLabels(), m1.getProgram());
         translator2.readAndTranslate(m2.getLabels(), m2.getProgram());
         Assertions.assertNotEquals(m1.hashCode(), m2.hashCode());
@@ -148,9 +144,9 @@ public class MachineTest {
         Machine m1 = new Machine(new Registers());
         Machine m2 = new Machine(new Registers());
         String fileLocation1 = new File(baseTestFilePath + "MixedInstructions.sml").getAbsolutePath();
-        Translator translator1 = new Translator(fileLocation1, InstructionFactory.getInstance());
+        Translator translator1 = new Translator(fileLocation1);
         String fileLocation2 = new File(baseTestFilePath + "readAndTranslateMixedInstructionMixedLabelsTestResource.txt").getAbsolutePath();
-        Translator translator2 = new Translator(fileLocation2, InstructionFactory.getInstance());
+        Translator translator2 = new Translator(fileLocation2);
         translator1.readAndTranslate(m1.getLabels(), m1.getProgram());
         translator2.readAndTranslate(m2.getLabels(), m2.getProgram());
         Assertions.assertFalse(m1.equals(m2));
