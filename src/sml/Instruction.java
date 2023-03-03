@@ -2,9 +2,12 @@ package sml;
 
 /**
  * Represents an abstract instruction.
+ *
  * This is the abstract form of a base unit of work in the program
+ *
  * Defines the common methods across all instructions for the program
- * Can be subclasses to give a concrete instruction
+ *
+ * Must be subclassed to give a concrete instruction
  *
  * @author lhickley
  */
