@@ -192,6 +192,19 @@ public class TranslatorTest {
         Assertions.assertEquals(expectedMessage, outputStreamCaptor.toString().trim());
     }
 
+    @Test
+    void readAndTranslateIncorrectParameterSuppliedMov() throws IOException {
+        String fileLocation = new File(baseTestFilePath + "readAndTranslateIncorrectParameterSuppliedMov.txt").getAbsolutePath();
+        Translator translator = new Translator(fileLocation);
+        ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStreamCaptor));
+        translator.readAndTranslate(machine.getLabels(), machine.getProgram());
+        String expectedMessage = """
+                An exception occurred while reading the program for the file.  Details:
+                Parameters supplied for mov were incorrect
+                The program may become corrupted and the input file should be reviewed""";
+        Assertions.assertEquals(expectedMessage, outputStreamCaptor.toString().trim());
+    }
 
 
 
