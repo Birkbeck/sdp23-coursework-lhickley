@@ -177,7 +177,6 @@ public class TranslatorTest {
         Assertions.assertEquals(expectedMessage, outputStreamCaptor.toString().trim());
     }
 
-    //We're only testing that an error gets thrown from the class below this one, so we don't need to run this for every instruction type.
     @Test
     void readAndTranslateIncorrectParametersSuppliedAdd() throws IOException {
         String fileLocation = new File(baseTestFilePath + "readAndTranslateIncorrectParametersSuppliedAdd.txt").getAbsolutePath();
@@ -187,7 +186,9 @@ public class TranslatorTest {
         translator.readAndTranslate(machine.getLabels(), machine.getProgram());
         String expectedMessage = """
                 An exception occurred while reading the program for the file.  Details:
-                Parameters supplied for add were incorrect
+                A non permissible register has been supplied as an argument for 'add'.
+                AcceptableRegister values are:
+                [EAX, EBX, ECX, EDX, ESP, EBP, ESI, EDI]
                 The program may become corrupted and the input file should be reviewed""";
         Assertions.assertEquals(expectedMessage, outputStreamCaptor.toString().trim());
     }

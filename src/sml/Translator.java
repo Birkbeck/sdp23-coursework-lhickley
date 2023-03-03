@@ -1,5 +1,7 @@
 package sml;
 
+import sml.instruction.*;
+
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.nio.charset.StandardCharsets;
@@ -78,47 +80,59 @@ public final class Translator {
      * The input line should consist of a single SML instruction,
      * with its label already removed.
      */
-    private Instruction getInstruction(String label) throws Exception {
+    private Instruction getInstruction(String label) {
         if (line.isEmpty())
             return null;
 
         String opcode = scan();
-        String instructionClassName = "sml.instruction." + opcode.substring(0, 1).toUpperCase() + opcode.substring(1) + "Instruction";
-
         try {
-            Class<?> instructionClass = Class.forName(instructionClassName);
-            if (instructionClass.getSuperclass() == Instruction.class) {
-                Constructor<?>[] constructors = instructionClass.getConstructors();
-
-                if (constructors.length != 1) {
-                    throw new RuntimeException("More than one constructor found for " + instructionClass.getName() +
-                            " only one should exist.");
+            switch (opcode) {
+                case AddInstruction.OP_CODE -> {
+                    String r = scan();
+                    String s = scan();
+                    return new AddInstruction(label, Register.valueOf(r), Register.valueOf(s));
                 }
-
-                Constructor<?>constructor = constructors[0];
-                Class<?>[] parameters = constructor.getParameterTypes();
-                Object[] constructorArgs = new Object[parameters.length];
-
-                constructorArgs[0] = label;
-
-                for (int i = 1; i < parameters.length; i++) {
-                    String arg = scan();
-                    if (parameters[i].toString().equals("interface sml.RegisterName")) {
-                        constructorArgs[i] = Register.valueOf(arg);
-                    } else if (parameters[i].toString().equals("int")) {
-                        constructorArgs[i] = Integer.parseInt(arg);
-                    } else {
-                        constructorArgs[i] = arg;
-                    }
+                case SubInstruction.OP_CODE -> {
+                    String r = scan();
+                    String s = scan();
+                    return new SubInstruction(label, Register.valueOf(r), Register.valueOf(s));
                 }
-                return (Instruction) constructor.newInstance(constructorArgs);
+                case MulInstruction.OP_CODE -> {
+                    String r = scan();
+                    String s = scan();
+                    return new MulInstruction(label, Register.valueOf(r), Register.valueOf(s));
+                }
+                case DivInstruction.OP_CODE -> {
+                    String r = scan();
+                    String s = scan();
+                    return new DivInstruction(label, Register.valueOf(r), Register.valueOf(s));
+                }
+                case OutInstruction.OP_CODE -> {
+                    String s = scan();
+                    return new OutInstruction(label, Register.valueOf(s));
+                }
+                case MovInstruction.OP_CODE -> {
+                    String r = scan();
+                    int v = Integer.parseInt(scan());
+                    return new MovInstruction(label, Register.valueOf(r), v);
+                }
+                case JnzInstruction.OP_CODE -> {
+                    String r = scan();
+                    String l = scan();
+                    return new JnzInstruction(label, Register.valueOf(r), l);
+                }
+                default -> {
+                    System.out.println("Unknown instruction: " + opcode);
+                }
             }
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Parameters supplied for " + opcode + " were incorrect");
         } catch (Exception e) {
-            throw new Exception("Unknown instruction: " + opcode);
+            if (e.getMessage().contains("No enum constant sml.Registers.Register.")) {
+                throw new RuntimeException("A non permissible register has been supplied as an argument for '" + opcode + "'.\nAcceptable" +
+                        "Register values are:\n" + Arrays.toString(Register.values()));
+            } else {
+                System.out.println("An exception occurred for opcode: '" + opcode + "'.  Details: " + e.getMessage());
+            }
         }
-
         return null;
     }
 

@@ -84,7 +84,9 @@ public class MachineTest {
         machine.execute();
         String expectedMessage = """
                 An exception occurred while reading the program for the file.  Details:
-                Parameters supplied for mov were incorrect
+                A non permissible register has been supplied as an argument for 'mov'.
+                AcceptableRegister values are:
+                [EAX, EBX, ECX, EDX, ESP, EBP, ESI, EDI]
                 The program may become corrupted and the input file should be reviewed""";
         Assertions.assertEquals(expectedMessage, outputStreamCaptor.toString().trim());
     }
@@ -99,7 +101,9 @@ public class MachineTest {
         machine.execute();
         String expectedMessage = """
                 An exception occurred while reading the program for the file.  Details:
-                Parameters supplied for mov were incorrect
+                A non permissible register has been supplied as an argument for 'mov'.
+                AcceptableRegister values are:
+                [EAX, EBX, ECX, EDX, ESP, EBP, ESI, EDI]
                 The program may become corrupted and the input file should be reviewed""";
         Assertions.assertEquals(expectedMessage, outputStreamCaptor.toString().trim());
     }
