@@ -39,16 +39,22 @@ public final class Translator {
                 line = sc.nextLine();
                 String label = getLabel();
 
-                Instruction instruction = getInstruction(label);
-                if (instruction != null) {
-                    if (label != null)
-                        try {
-                            labels.addLabel(label, program.size());
-                        } catch (RuntimeException e) {
-                            System.out.println("Duplicate labels are not permitted.");
-                            System.out.println("The label '" + label + "' has been supplied earlier in the program source file.");
-                        }
-                    program.add(instruction);
+                try {
+                    Instruction instruction = getInstruction(label);
+                    if (instruction != null) {
+                        if (label != null)
+                            try {
+                                labels.addLabel(label, program.size());
+                            } catch (RuntimeException e) {
+                                System.out.println("Duplicate labels are not permitted.");
+                                System.out.println("The label '" + label + "' has been supplied earlier in the program source file.");
+                            }
+                        program.add(instruction);
+                    }
+                } catch (Exception e) {
+                    System.out.println("An exception occurred while reading the program for the file.  Details:\n" + e.getMessage());
+                    System.out.println("The program may become corrupted and the input file should be reviewed");
+                    break;
                 }
             }
         }
@@ -71,24 +77,12 @@ public final class Translator {
 
         ArrayList<String> wordList = new ArrayList<>();
 
-        while (line.length() > 0){
+        while (line.length() > 0) {
             String word = scan();
             wordList.add(word);
         }
 
-        try {
-            return instructionFactory.create(label, opcode, wordList);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Parameters supplied for " + opcode + " were incorrect");
-        } catch (RuntimeException e) {
-            //Exceptions here are thrown from our class below, so we want to just report those messages pleasantly.
-            System.out.println(e.getMessage());
-        } catch (Exception e) {
-            //This should be impossible to reach, but we still want to handle it just incase.
-            System.out.println("An error has occurred: " + e.getMessage());
-        }
-
-        return null;
+        return instructionFactory.create(label, opcode, wordList);
     }
 
 

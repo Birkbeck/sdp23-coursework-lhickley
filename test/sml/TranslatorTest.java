@@ -185,7 +185,10 @@ public class TranslatorTest {
         ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStreamCaptor));
         translator.readAndTranslate(machine.getLabels(), machine.getProgram());
-        String expectedMessage = "For add instructions, only two arguments are accepted after the opcode";
+        String expectedMessage = """
+                An exception occurred while reading the program for the file.  Details:
+                For add instructions, only two arguments are accepted after the opcode
+                The program may become corrupted and the input file should be reviewed""";
         Assertions.assertEquals(expectedMessage, outputStreamCaptor.toString().trim());
     }
 

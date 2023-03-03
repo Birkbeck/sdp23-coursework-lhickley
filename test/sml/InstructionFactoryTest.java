@@ -88,30 +88,33 @@ public class InstructionFactoryTest {
     void illegalRegisterPassedToConstructor() {
         args.add("EAX");
         args.add("ZZZ");
-        instructionFactory.create(null, "add", args);
-        Assertions.assertEquals("Illegal arguments passed for 'add'\n" +
-                "Permitted register values are: \n" +
-                "[EAX, EBX, ECX, EDX, ESP, EBP, ESI, EDI]", outputStreamCaptor.toString().trim());
+        Exception exception = assertThrows(RuntimeException.class, () -> instructionFactory.create(null, "add", args));
+        String expectedMessage = """
+                Illegal arguments passed for 'add'
+                Permitted register values are:\s
+                [EAX, EBX, ECX, EDX, ESP, EBP, ESI, EDI]""";
+        Assertions.assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test
     void unknownOpcode() {
         args.add("EAX");
         args.add("EBX");
-        instructionFactory.create(null, "test", args);
-        Assertions.assertEquals("Illegal arguments passed for 'test'\n" +
-        "Unknown instruction 'test'", outputStreamCaptor.toString().trim());
+        Exception exception = assertThrows(RuntimeException.class, () -> instructionFactory.create(null, "test", args));
+        String expectedMessage = "Illegal arguments passed for 'test'\nUnknown instruction 'test'";
+        Assertions.assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test
     void nonIntegerPassedToMov() {
         args.add("EAX");
         args.add("test");
-        instructionFactory.create(null, "mov", args);
-        Assertions.assertEquals("""
+        Exception exception = assertThrows(RuntimeException.class, () -> instructionFactory.create(null, "mov", args));
+        String expectedMessage = """
                 Illegal arguments passed for 'mov'
                 Value passed was not an acceptable integer value.
-                Value stored in registers must be between -2,147,483,648 and 2,147,483,647 inclusive.""", outputStreamCaptor.toString().trim());
+                Value stored in registers must be between -2,147,483,648 and 2,147,483,647 inclusive.""";
+        Assertions.assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test
@@ -126,22 +129,24 @@ public class InstructionFactoryTest {
     void overflowIntegerPassToMov() {
         args.add("EAX");
         args.add("2147483648");
-        instructionFactory.create(null, "mov", args);
-        Assertions.assertEquals("""
+        Exception exception = assertThrows(RuntimeException.class, () -> instructionFactory.create(null, "mov", args));
+        String expectedMessage = """
                 Illegal arguments passed for 'mov'
                 Value passed was not an acceptable integer value.
-                Value stored in registers must be between -2,147,483,648 and 2,147,483,647 inclusive.""", outputStreamCaptor.toString().trim());
+                Value stored in registers must be between -2,147,483,648 and 2,147,483,647 inclusive.""";
+        Assertions.assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test
     void underflowIntegerPassToMov() {
         args.add("EAX");
         args.add("-2147483649");
-        instructionFactory.create(null, "mov", args);
-        Assertions.assertEquals("""
+        Exception exception = assertThrows(RuntimeException.class, () -> instructionFactory.create(null, "mov", args));
+        String expectedMessage = """
                 Illegal arguments passed for 'mov'
                 Value passed was not an acceptable integer value.
-                Value stored in registers must be between -2,147,483,648 and 2,147,483,647 inclusive.""", outputStreamCaptor.toString().trim());
+                Value stored in registers must be between -2,147,483,648 and 2,147,483,647 inclusive.""";
+        Assertions.assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test
