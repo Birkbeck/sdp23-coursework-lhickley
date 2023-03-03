@@ -44,20 +44,14 @@ public class InstructionFactory {
             };
         } catch (IllegalArgumentException e) {
             String eString = e.toString();
-            //System.out.println("Illegal arguments passed for '" + opcode + "'");
             String errorMessage = "Illegal arguments passed for '" + opcode + "'\n";
             if (eString.contains("No enum constant")) {
                 errorMessage = errorMessage + "Permitted register values are: \n" + Arrays.toString(Register.values());
-                //System.out.println("Permitted register values are: ");
-                //System.out.println(Arrays.toString(Register.values()));
             } else if (eString.contains("Unknown instruction")) {
                 errorMessage = errorMessage + "Unknown instruction '" + opcode + "'";
-                //System.out.println("Unknown instruction '" + opcode + "'");
             } else if (eString.contains("NumberFormatException")) {
                 errorMessage = errorMessage + "Value passed was not an acceptable integer value.\n" +
                         "Value stored in registers must be between -2,147,483,648 and 2,147,483,647 inclusive.";
-                //System.out.println("Value passed was not an acceptable integer value.");
-                //System.out.println("Value stored in registers must be between -2,147,483,648 and 2,147,483,647 inclusive.");
             }
             throw new RuntimeException(errorMessage);
         }
