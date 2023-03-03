@@ -36,11 +36,19 @@ public class OutInstruction extends Instruction {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OutInstruction that = (OutInstruction) o;
-        return source.equals(that.source);
+        if (label != null) {
+            return label.equals(that.label) && source.equals(that.source);
+        } else {
+            return source.equals(that.source);
+        }
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(opcode, source);
+        if (label != null) {
+            return Objects.hash(label, opcode, source);
+        } else {
+            return Objects.hash(opcode, source);
+        }
     }
 }
