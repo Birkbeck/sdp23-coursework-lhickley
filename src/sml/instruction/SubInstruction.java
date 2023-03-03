@@ -37,11 +37,19 @@ public class SubInstruction extends Instruction implements UnderOverFlowHandling
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SubInstruction that = (SubInstruction) o;
-        return result.equals(that.result) && source.equals(that.source);
+        if (this.label != null) {
+            return label.equals(that.label) && result.equals(that.result) && source.equals(that.source);
+        } else {
+            return result.equals(that.result) && source.equals(that.source);
+        }
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(opcode, result, source);
+        if (label != null) {
+            return Objects.hash(label, opcode, result, source);
+        } else {
+            return Objects.hash(opcode, result, source);
+        }
     }
 }

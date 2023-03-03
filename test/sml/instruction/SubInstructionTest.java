@@ -118,4 +118,89 @@ public class SubInstructionTest {
         String actualMessage = exception.getMessage();
         Assertions.assertEquals(expectedMessage, actualMessage);
     }
+
+    @Test
+    void hashCodeNoLabelsSymmetryTest() {
+        Instruction instruction1 = new SubInstruction(null, EAX, EBX);
+        Instruction instruction2 = new SubInstruction(null, EAX, EBX);
+        Assertions.assertEquals(instruction1.hashCode(), instruction2.hashCode());
+    }
+
+    @Test
+    void hashCodeWithIdenticalLabelsSymmetryTest() {
+        Instruction instruction1 = new SubInstruction("test", EAX, EBX);
+        Instruction instruction2 = new SubInstruction("test", EAX, EBX);
+        Assertions.assertEquals(instruction1.hashCode(), instruction2.hashCode());
+    }
+
+    @Test
+    void hashCodeWithOneLabelsAsymmetryTest() {
+        Instruction instruction1 = new SubInstruction("test", EAX, EBX);
+        Instruction instruction2 = new SubInstruction(null, EAX, EBX);
+        Assertions.assertNotEquals(instruction1.hashCode(), instruction2.hashCode());
+    }
+
+    @Test
+    void hashCodeWithBothLabelsAsymmetryTest() {
+        Instruction instruction1 = new SubInstruction("test", EAX, EBX);
+        Instruction instruction2 = new SubInstruction("dif", EAX, EBX);
+        Assertions.assertNotEquals(instruction1.hashCode(), instruction2.hashCode());
+    }
+
+    @Test
+    void hashCodeWithDifferingRegisterAsymmetryTest() {
+        Instruction instruction1 = new SubInstruction(null, EAX, EBX);
+        Instruction instruction2 = new SubInstruction(null, EAX, ECX);
+        Assertions.assertNotEquals(instruction1.hashCode(), instruction2.hashCode());
+    }
+
+    @Test
+    void hashCodeOtherClassAsymmetryTest() {
+        Instruction instruction1 = new SubInstruction(null, EAX, EBX);
+        Instruction instruction2 = new AddInstruction(null, EAX, EBX);
+        Assertions.assertNotEquals(instruction1.hashCode(), instruction2.hashCode());
+    }
+
+    @Test
+    void equalsNoLabelsSymmetryTest() {
+        Instruction instruction1 = new SubInstruction(null, EAX, EBX);
+        Instruction instruction2 = new SubInstruction(null, EAX, EBX);
+        Assertions.assertTrue(instruction1.equals(instruction2));
+    }
+
+    @Test
+    void equalsWithIdenticalLabelsSymmetryTest() {
+        Instruction instruction1 = new SubInstruction("test", EAX, EBX);
+        Instruction instruction2 = new SubInstruction("test", EAX, EBX);
+        Assertions.assertTrue(instruction1.equals(instruction2));
+    }
+
+    @Test
+    void equalsWithOneLabelsAsymmetryTest() {
+        Instruction instruction1 = new SubInstruction("test", EAX, EBX);
+        Instruction instruction2 = new SubInstruction(null, EAX, EBX);
+        Assertions.assertFalse(instruction1.equals(instruction2));
+    }
+
+    @Test
+    void equalsWithBothLabelsAsymmetryTest() {
+        Instruction instruction1 = new SubInstruction("test", EAX, EBX);
+        Instruction instruction2 = new SubInstruction("dif", EAX, EBX);
+        Assertions.assertFalse(instruction1.equals(instruction2));
+    }
+
+    @Test
+    void equalsWithDifferingRegisterAsymmetryTest() {
+        Instruction instruction1 = new SubInstruction(null, EAX, EBX);
+        Instruction instruction2 = new SubInstruction(null, EAX, ECX);
+        Assertions.assertFalse(instruction1.equals(instruction2));
+    }
+
+    @Test
+    void equalsOtherClassAsymmetryTest() {
+        Instruction instruction1 = new SubInstruction(null, EAX, EBX);
+        Instruction instruction2 = new AddInstruction(null, EAX, EBX);
+        Assertions.assertFalse(instruction1.equals(instruction2));
+    }
+
 }
