@@ -2,6 +2,8 @@ package sml.instruction;
 
 import sml.*;
 
+import java.util.Objects;
+
 // TODO: write a JavaDoc for the class
 
 /**
@@ -34,5 +36,22 @@ public class AddInstruction extends Instruction implements UnderOverFlowHandling
 	@Override
 	public String toString() {
 		return getLabelString() + getOpcode() + " " + result + " " + source;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		AddInstruction that = (AddInstruction) o;
+		return label.equals(that.label) && result.equals(that.result) && source.equals(that.source);
+	}
+
+	@Override
+	public int hashCode() {
+		if (label != null) {
+			return Objects.hash(label, opcode, result, source);
+		} else {
+			return Objects.hash(opcode, result, source);
+		}
 	}
 }

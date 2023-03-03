@@ -4,6 +4,8 @@ import sml.Instruction;
 import sml.Machine;
 import sml.RegisterName;
 
+import java.util.Objects;
+
 public class DivInstruction extends Instruction {
     private final RegisterName result;
     private final RegisterName source;
@@ -32,5 +34,18 @@ public class DivInstruction extends Instruction {
     @Override
     public String toString() {
         return getLabelString() + getOpcode() + " " + result + " " + source;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DivInstruction that = (DivInstruction) o;
+        return result.equals(that.result) && source.equals(that.source);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(opcode, result, source);
     }
 }

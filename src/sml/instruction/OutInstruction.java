@@ -5,6 +5,8 @@ import sml.Machine;
 import sml.RegisterName;
 import sml.Registers;
 
+import java.util.Objects;
+
 public class OutInstruction extends Instruction {
 
     private final RegisterName source;
@@ -27,5 +29,18 @@ public class OutInstruction extends Instruction {
     @Override
     public String toString() {
         return getLabelString() + getOpcode() + " " + source;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OutInstruction that = (OutInstruction) o;
+        return source.equals(that.source);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(opcode, source);
     }
 }

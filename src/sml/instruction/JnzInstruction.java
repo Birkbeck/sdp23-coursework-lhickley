@@ -2,6 +2,8 @@ package sml.instruction;
 
 import sml.*;
 
+import java.util.Objects;
+
 public class JnzInstruction extends Instruction {
 
     private final RegisterName registerToCheck;
@@ -30,5 +32,18 @@ public class JnzInstruction extends Instruction {
     @Override
     public String toString() {
         return getLabelString() + getOpcode() + " " + registerToCheck + " " + labelToJumpTo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        JnzInstruction that = (JnzInstruction) o;
+        return registerToCheck.equals(that.registerToCheck) && labelToJumpTo.equals(that.labelToJumpTo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(opcode, registerToCheck, labelToJumpTo);
     }
 }

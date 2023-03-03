@@ -5,6 +5,8 @@ import sml.Machine;
 import sml.RegisterName;
 import sml.Registers;
 
+import java.util.Objects;
+
 public class MovInstruction extends Instruction {
 
     private final RegisterName registerToSet;
@@ -28,5 +30,18 @@ public class MovInstruction extends Instruction {
     @Override
     public String toString() {
         return getLabelString() + getOpcode() + " " + registerToSet + " " + value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MovInstruction that = (MovInstruction) o;
+        return value == that.value && registerToSet.equals(that.registerToSet);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(opcode, registerToSet, value);
     }
 }
