@@ -69,7 +69,6 @@ public final class Machine {
 				.collect(Collectors.joining("\n"));
 	}
 
-	//TODO Needs testing
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Machine m) {
