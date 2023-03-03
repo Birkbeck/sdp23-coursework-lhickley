@@ -10,7 +10,8 @@ import sml.Machine;
 import sml.Registers;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static sml.Registers.Register.EAX;
+import static sml.Registers.Register.*;
+import static sml.Registers.Register.EBX;
 
 public class JnzInstructionTest {
     private Machine machine;
@@ -70,5 +71,77 @@ public class JnzInstructionTest {
         String actualMessage = exception.getMessage();
 
         Assertions.assertEquals(expectedMessage, actualMessage);
+    }
+    
+    ///
+
+    @Test
+    void hashCodeNoLabelsSymmetryTest() {
+        Instruction instruction1 = new JnzInstruction(null, EAX, "test");
+        Instruction instruction2 = new JnzInstruction(null, EAX, "test");
+        Assertions.assertEquals(instruction1.hashCode(), instruction2.hashCode());
+    }
+
+    @Test
+    void hashCodeWithIdenticalLabelsSymmetryTest() {
+        Instruction instruction1 = new JnzInstruction("test", EAX, "test");
+        Instruction instruction2 = new JnzInstruction("test", EAX, "test");
+        Assertions.assertEquals(instruction1.hashCode(), instruction2.hashCode());
+    }
+
+    @Test
+    void hashCodeWithOneLabelsAsymmetryTest() {
+        Instruction instruction1 = new JnzInstruction("test", EAX, "test");
+        Instruction instruction2 = new JnzInstruction(null, EAX, "test");
+        Assertions.assertNotEquals(instruction1.hashCode(), instruction2.hashCode());
+    }
+
+    @Test
+    void hashCodeWithBothLabelsAsymmetryTest() {
+        Instruction instruction1 = new JnzInstruction("test", EAX, "test");
+        Instruction instruction2 = new JnzInstruction("dif", EAX, "test");
+        Assertions.assertNotEquals(instruction1.hashCode(), instruction2.hashCode());
+    }
+
+    @Test
+    void hashCodeWithDifferingLabelJumpAsymmetryTest() {
+        Instruction instruction1 = new JnzInstruction(null, EAX, "test");
+        Instruction instruction2 = new JnzInstruction(null, EAX, "dif");
+        Assertions.assertNotEquals(instruction1.hashCode(), instruction2.hashCode());
+    }
+
+    @Test
+    void hashCodeOtherClassAsymmetryTest() {
+        Instruction instruction1 = new JnzInstruction(null, EAX, "test");
+        Instruction instruction2 = new AddInstruction(null, EAX, EBX);
+        Assertions.assertNotEquals(instruction1.hashCode(), instruction2.hashCode());
+    }
+
+    @Test
+    void equalsNoLabelsSymmetryTest() {
+        Instruction instruction1 = new JnzInstruction(null, EAX, "test");
+        Instruction instruction2 = new JnzInstruction(null, EAX, "test");
+        Assertions.assertTrue(instruction1.equals(instruction2));
+    }
+
+    @Test
+    void equalsWithIdenticalLabelsSymmetryTest() {
+        Instruction instruction1 = new JnzInstruction("test", EAX, "test");
+        Instruction instruction2 = new JnzInstruction("test", EAX, "test");
+        Assertions.assertTrue(instruction1.equals(instruction2));
+    }
+
+    @Test
+    void equalsWithOneLabelsAsymmetryTest() {
+        Instruction instruction1 = new JnzInstruction("test", EAX, "test");
+        Instruction instruction2 = new JnzInstruction(null, EAX, "test");
+        Assertions.assertFalse(instruction1.equals(instruction2));
+    }
+
+    @Test
+    void equalsWithBothLabelsAsymmetryTest() {
+        Instruction instruction1 = new JnzInstruction("test", EAX, "test");
+        Instruction instruction2 = new JnzInstruction("dif", EAX, "test");
+        Assertions.assertFalse(instruction1.equals(instruction2));
     }
 }

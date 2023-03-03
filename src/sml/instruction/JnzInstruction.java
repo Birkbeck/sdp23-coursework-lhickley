@@ -39,11 +39,19 @@ public class JnzInstruction extends Instruction {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         JnzInstruction that = (JnzInstruction) o;
-        return registerToCheck.equals(that.registerToCheck) && labelToJumpTo.equals(that.labelToJumpTo);
+        if (label != null) {
+            return label.equals(that.label) && registerToCheck.equals(that.registerToCheck) && labelToJumpTo.equals(that.labelToJumpTo);
+        } else {
+            return registerToCheck.equals(that.registerToCheck) && labelToJumpTo.equals(that.labelToJumpTo);
+        }
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(opcode, registerToCheck, labelToJumpTo);
+        if (label != null) {
+            return Objects.hash(label, opcode, registerToCheck, labelToJumpTo);
+        } else {
+            return Objects.hash(opcode, registerToCheck, labelToJumpTo);
+        }
     }
 }
