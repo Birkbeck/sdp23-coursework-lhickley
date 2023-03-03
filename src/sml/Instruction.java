@@ -59,17 +59,8 @@ public abstract class Instruction {
 
 	@Override
 	public abstract boolean equals(Object o);
-	/*public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Instruction that = (Instruction) o;
-		return Objects.equals(label, that.label) && opcode.equals(that.opcode);
-	}*/
 
 	@Override
 	public abstract int hashCode();
-	/*public int hashCode() {
-		return Objects.hash(label, opcode);
-	}*/
 
 }
