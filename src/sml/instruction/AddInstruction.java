@@ -43,7 +43,11 @@ public class AddInstruction extends Instruction implements UnderOverFlowHandling
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		AddInstruction that = (AddInstruction) o;
-		return label.equals(that.label) && result.equals(that.result) && source.equals(that.source);
+		if (this.label != null) {
+			return label.equals(that.label) && result.equals(that.result) && source.equals(that.source);
+		} else {
+			return result.equals(that.result) && source.equals(that.source);
+		}
 	}
 
 	@Override
