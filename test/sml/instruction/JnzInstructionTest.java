@@ -72,8 +72,6 @@ public class JnzInstructionTest {
 
         Assertions.assertEquals(expectedMessage, actualMessage);
     }
-    
-    ///
 
     @Test
     void hashCodeNoLabelsSymmetryTest() {

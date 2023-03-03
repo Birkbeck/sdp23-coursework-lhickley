@@ -37,11 +37,19 @@ public class MovInstruction extends Instruction {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MovInstruction that = (MovInstruction) o;
-        return value == that.value && registerToSet.equals(that.registerToSet);
+        if (label != null) {
+            return label.equals(that.label) && value == that.value && registerToSet.equals(that.registerToSet);
+        } else {
+            return value == that.value && registerToSet.equals(that.registerToSet);
+        }
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(opcode, registerToSet, value);
+        if (label != null) {
+            return Objects.hash(label, opcode, registerToSet, value);
+        } else {
+            return Objects.hash(opcode, registerToSet, value);
+        }
     }
 }
