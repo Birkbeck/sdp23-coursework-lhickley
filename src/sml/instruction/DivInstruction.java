@@ -6,6 +6,11 @@ import sml.RegisterName;
 
 import java.util.Objects;
 
+/**
+ * Represents an instruction that divides the value of two registers and stores the result in the first register.
+ *
+ * @author lhickley
+ */
 public class DivInstruction extends Instruction {
     private final RegisterName result;
     private final RegisterName source;
@@ -18,6 +23,14 @@ public class DivInstruction extends Instruction {
         this.source = source;
     }
 
+
+    /**
+     * Performs the division operation on the specified registers and stores the result in the result register. If
+     * the source register contains a value of 0, a runtime exception is thrown.
+     * @param m the machine on which the instruction is being executed
+     * @return the amount by which to update the program counter
+     * @throws RuntimeException if the source register contains a value of 0
+     */
     @Override
     public int execute(Machine m) {
         int value1 = m.getRegisters().get(result);
@@ -36,6 +49,15 @@ public class DivInstruction extends Instruction {
         return getLabelString() + getOpcode() + " " + result + " " + source;
     }
 
+    /**
+     * Compares the DivInstruction object to another object to determine if they are equal.
+     *
+     * Two DivInstruction objects are considered equal if they have the same label (or no label) and the same
+     * result and source registers.
+     *
+     * @param o the object to compare to
+     * @return true if the objects are equal, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -48,6 +70,12 @@ public class DivInstruction extends Instruction {
         }
     }
 
+    /**
+     * Returns a hash code value for the {@code DivInstruction} object.
+     * The hash code is based on the opcode, result register, and source register.
+     * If the instruction has a non-null label, it is also included in the hash code calculation.
+     * @return the hash code value for this {@code DivInstruction} object
+     */
     @Override
     public int hashCode() {
         if (label != null) {

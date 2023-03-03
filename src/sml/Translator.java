@@ -5,11 +5,20 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
- * This class ....
+ * This class does the work of reading from a file and translating the contents of that file to a program for
+ * a machine to execute.
+ *
+ * Sets the contents of 'labels' and 'program' for a given machine instance, from an input file.
+ *
+ * Contains flows to ensure the program does not become corrupted, or interacts with those handled at a lower level
+ * to allow for a graceful termination of a corrupted program from an input file.
+ *
+ * Consists of methods for reading from a file and converting to an instruction set, and helper methods for doing so.
+ *
  * <p>
  * The translator of a <b>S</b><b>M</b>al<b>L</b> program.
  *
- * @author ...
+ * @author lhickley
  */
 public final class Translator {
 

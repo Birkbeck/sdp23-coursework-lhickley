@@ -69,6 +69,12 @@ public final class Machine {
 				.collect(Collectors.joining("\n"));
 	}
 
+	/**
+	 * Compares this Machine object with another object for equality.
+	 * @param o the object to compare
+	 * @return true if the object being compared is an instance of Machine and all of its fields match those of this object,
+	 * otherwise false
+	 */
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Machine m) {
@@ -80,6 +86,11 @@ public final class Machine {
 		return false;
 	}
 
+	/**
+	 * Returns a hash code value for the Machine object based on the hash codes of its components:
+	 * labels, program, registers, and programCounter.
+	 * @return an int value representing the hash code of the Machine object
+	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(labels, program, registers, programCounter);

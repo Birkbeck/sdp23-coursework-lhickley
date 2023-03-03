@@ -7,6 +7,24 @@ import java.util.Arrays;
 
 import static sml.Registers.Register;
 
+/**
+ * The InstructionFactory class is responsible for creating instances of Instruction objects based on the
+ * given opcode and arguments.
+ *
+ * It uses the singleton design pattern to ensure that there is only one instance of the factory.
+ *
+ * The create method takes a label, an opcode, and an ArrayList of arguments, and returns an Instruction object
+ * based on the opcode and arguments.
+ *
+ * The class throws a RuntimeException if an invalid opcode or an incorrect number or type of arguments is provided.
+ *
+ * The class throws a RuntimeException if an invalid register value or integer value is provided.
+ *
+ * The class uses the Registers enum to ensure that only valid register values are accepted.
+ *
+ * @author lhickley
+ */
+
 public class InstructionFactory {
 
     private static InstructionFactory instance = null;
@@ -21,6 +39,16 @@ public class InstructionFactory {
         return instance;
     }
 
+    /**
+     * Creates an Instruction object based on the given opcode and arguments.
+     * @param label the label associated with the instruction
+     * @param opcode the opcode for the instruction
+     * @param args an ArrayList of Strings representing the arguments for the instruction
+     * @return an Instruction object based on the opcode and arguments
+     * @throws RuntimeException if the opcode is invalid or the number or type of arguments is incorrect
+     * @throws RuntimeException if an invalid register value or integer value is provided
+     * @return
+     */
     public Instruction create(String label, String opcode, ArrayList<String> args) {
         try {
             if (opcode.equals("out")) {

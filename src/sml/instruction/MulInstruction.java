@@ -4,6 +4,14 @@ import sml.*;
 
 import java.util.Objects;
 
+/**
+ * Represents an instruction that multiplies the value of two registers and stores the result in the first register.
+ *
+ * Implements the UnderOverFlowHandling interface for handling overflow and underflow situations.
+ *
+ * @author lhickley
+ */
+
 public class MulInstruction extends Instruction implements UnderOverFlowHandling {
     private final RegisterName result;
     private final RegisterName source;
@@ -16,6 +24,15 @@ public class MulInstruction extends Instruction implements UnderOverFlowHandling
         this.source = source;
     }
 
+    /**
+     * Executes the multiplication instruction, multiplies the value in the result register by the value in the source
+     * register and stores the result in the result register.
+     *
+     * Handles overflow and underflow situations.
+     *
+     * @param m the Machine object that is executing the instruction
+     * @return the program counter increment
+     */
     @Override
     public int execute(Machine m) {
         int value1 = m.getRegisters().get(result);
@@ -32,6 +49,15 @@ public class MulInstruction extends Instruction implements UnderOverFlowHandling
         return getLabelString() + getOpcode() + " " + result + " " + source;
     }
 
+    /**
+     * Determines whether the specified object is equal to this MulInstruction object.
+     *
+     * Two MulInstruction objects are considered equal if they have the same label (or lack thereof), result register,
+     * and source register.
+     *
+     * @param o the object to compare to this MulInstruction object
+     * @return true if the specified object is equal to this MulInstruction object, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -44,6 +70,12 @@ public class MulInstruction extends Instruction implements UnderOverFlowHandling
         }
     }
 
+    /**
+     * Returns a hash code value for the {@code MulInstruction} object.
+     * The hash code is based on the opcode, result register, and source register.
+     * If the instruction has a non-null label, it is also included in the hash code calculation.
+     * @return the hash code value for this {@code MulInstruction} object
+     */
     @Override
     public int hashCode() {
         if (label != null) {

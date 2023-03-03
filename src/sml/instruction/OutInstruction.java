@@ -7,6 +7,12 @@ import sml.Registers;
 
 import java.util.Objects;
 
+/**
+ * The OutInstruction class represents an instruction to output the value of a register to the console
+ *
+ * @author lhickley
+ */
+
 public class OutInstruction extends Instruction {
 
     private final RegisterName source;
@@ -18,6 +24,11 @@ public class OutInstruction extends Instruction {
         this.source = source;
     }
 
+    /**
+     * Outputs the value of the register specified by the instruction to the console.
+     * @param m the machine on which the instruction is to be executed
+     * @return the value by which to update the program counter after the instruction has executed
+     */
     @Override
     public int execute(Machine m) {
         Registers registers = m.getRegisters();
@@ -31,6 +42,14 @@ public class OutInstruction extends Instruction {
         return getLabelString() + getOpcode() + " " + source;
     }
 
+    /**
+     * Returns whether this OutInstruction is equal to the specified object.
+     *
+     * Two OutInstructions are equal if they have the same label (or lack thereof) and the same source register.
+     *
+     * @param o the object to compare to this OutInstruction
+     * @return true if this OutInstruction is equal to the specified object, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -43,6 +62,12 @@ public class OutInstruction extends Instruction {
         }
     }
 
+    /**
+     * Returns the hash code for this OutInstruction.
+     * The hash code is based on the opcode, label (or lack thereof), and source register of the instruction.
+     *
+     * @return the hash code for this OutInstruction
+     */
     @Override
     public int hashCode() {
         if (label != null) {

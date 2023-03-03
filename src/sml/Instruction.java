@@ -1,13 +1,12 @@
 package sml;
 
-// TODO: write a JavaDoc for the class
-
-import java.util.Objects;
-
 /**
  * Represents an abstract instruction.
+ * This is the abstract form of a base unit of work in the program
+ * Defines the common methods across all instructions for the program
+ * Can be subclasses to give a concrete instruction
  *
- * @author ...
+ * @author lhickley
  */
 public abstract class Instruction {
 	protected final String label;
@@ -57,9 +56,20 @@ public abstract class Instruction {
 	@Override
 	public abstract String toString();
 
+	/**
+	 * Implemented as abstract to enforce implementation in subclasses
+	 * There are too many particulars about each subclass to make a default method sensible.
+	 * @param o
+	 * @return
+	 */
 	@Override
 	public abstract boolean equals(Object o);
 
+	/**
+	 * Implemented as abstract to enforce implementation in subclasses
+	 * There are too many particulars about each subclass to make a default method sensible.
+	 * @return
+	 */
 	@Override
 	public abstract int hashCode();
 

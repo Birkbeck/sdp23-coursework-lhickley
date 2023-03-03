@@ -4,10 +4,13 @@ import sml.*;
 
 import java.util.Objects;
 
-// TODO: write a JavaDoc for the class
-
 /**
- * @author
+ * The AddInstruction class represents an instruction that adds two values from registers and stores the result in
+ * the first register.
+ *
+ * It extends the Instruction class and implements the UnderOverFlowHandling interface.
+ *
+ * @author lhickley
  */
 
 public class AddInstruction extends Instruction implements UnderOverFlowHandling {
@@ -22,6 +25,16 @@ public class AddInstruction extends Instruction implements UnderOverFlowHandling
 		this.source = source;
 	}
 
+	/**
+	 * Executes the AddInstruction by adding the values from two registers and storing the result in the register specified
+	 * by the 'result' attribute.
+	 *
+	 * If overflow or underflow occurs, the appropriate action is taken according to the implementation of the
+	 * UnderOverFlowHandling interface.
+	 *
+	 * @param m the Machine object that this instruction executes for
+	 * @return an integer representing the next instruction to execute
+	 */
 	@Override
 	public int execute(Machine m) {
 		int value1 = m.getRegisters().get(result);
@@ -38,6 +51,13 @@ public class AddInstruction extends Instruction implements UnderOverFlowHandling
 		return getLabelString() + getOpcode() + " " + result + " " + source;
 	}
 
+	/**
+	 * Determines whether a label exists, if it does then use this with all the other fields for the instance to
+	 * compare equality.  If it does not, use all the fields.
+	 *
+	 * @param o the object to compare to
+	 * @return a boolean defining whether the objects are equal
+	 */
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -50,6 +70,12 @@ public class AddInstruction extends Instruction implements UnderOverFlowHandling
 		}
 	}
 
+	/**
+	 * Determines whether a label exists, if it does then use this with all the other fields for the instance to
+	 * construct the hashcode.  If it does not, use all the fields.
+	 *
+	 * @return int the hash code for the object
+	 */
 	@Override
 	public int hashCode() {
 		if (label != null) {
