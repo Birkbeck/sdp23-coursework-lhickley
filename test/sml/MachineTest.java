@@ -108,6 +108,52 @@ public class MachineTest {
         Assertions.assertEquals(expectedMessage, outputStreamCaptor.toString().trim());
     }
 
+    @Test
+    void hashCodeSymmetry() throws IOException {
+        Machine m1 = new Machine(new Registers());
+        Machine m2 = new Machine(new Registers());
+        String fileLocation = new File(baseTestFilePath + "MixedInstructions.sml").getAbsolutePath();
+        Translator translator = new Translator(fileLocation, InstructionFactory.getInstance());
+        translator.readAndTranslate(m1.getLabels(), m1.getProgram());
+        translator.readAndTranslate(m2.getLabels(), m2.getProgram());
+        Assertions.assertEquals(m1.hashCode(), m2.hashCode());
+    }
 
+    @Test
+    void equalsSymmetry() throws IOException {
+        Machine m1 = new Machine(new Registers());
+        Machine m2 = new Machine(new Registers());
+        String fileLocation = new File(baseTestFilePath + "MixedInstructions.sml").getAbsolutePath();
+        Translator translator = new Translator(fileLocation, InstructionFactory.getInstance());
+        translator.readAndTranslate(m1.getLabels(), m1.getProgram());
+        translator.readAndTranslate(m2.getLabels(), m2.getProgram());
+        Assertions.assertTrue(m1.equals(m2));
+    }
+
+    @Test
+    void hashCodeAsymmetry() throws IOException {
+        Machine m1 = new Machine(new Registers());
+        Machine m2 = new Machine(new Registers());
+        String fileLocation1 = new File(baseTestFilePath + "MixedInstructions.sml").getAbsolutePath();
+        Translator translator1 = new Translator(fileLocation1, InstructionFactory.getInstance());
+        String fileLocation2 = new File(baseTestFilePath + "readAndTranslateMixedInstructionMixedLabelsTestResource.txt").getAbsolutePath();
+        Translator translator2 = new Translator(fileLocation2, InstructionFactory.getInstance());
+        translator1.readAndTranslate(m1.getLabels(), m1.getProgram());
+        translator2.readAndTranslate(m2.getLabels(), m2.getProgram());
+        Assertions.assertNotEquals(m1.hashCode(), m2.hashCode());
+    }
+
+    @Test
+    void equalsAsymmetry() throws IOException {
+        Machine m1 = new Machine(new Registers());
+        Machine m2 = new Machine(new Registers());
+        String fileLocation1 = new File(baseTestFilePath + "MixedInstructions.sml").getAbsolutePath();
+        Translator translator1 = new Translator(fileLocation1, InstructionFactory.getInstance());
+        String fileLocation2 = new File(baseTestFilePath + "readAndTranslateMixedInstructionMixedLabelsTestResource.txt").getAbsolutePath();
+        Translator translator2 = new Translator(fileLocation2, InstructionFactory.getInstance());
+        translator1.readAndTranslate(m1.getLabels(), m1.getProgram());
+        translator2.readAndTranslate(m2.getLabels(), m2.getProgram());
+        Assertions.assertFalse(m1.equals(m2));
+    }
 
 }
