@@ -3,11 +3,15 @@ package sml;
 import java.util.*;
 import java.util.stream.Collectors;
 
-// TODO: write a JavaDoc for the class
-
 /**
+ * This class represents the structure we use to store Registers and their contents.
  *
- * @author ...
+ * Defines the permissible RegisterNames for the architecture.
+ *
+ * This class consists of methods for the interaction with this data structure, such as the setting of register values
+ * and the retrieval of values stored in registers.
+ *
+ * @author lhickley
  */
 public final class Registers {
     private final Map<Register, Integer> registers = new HashMap<>();
@@ -45,13 +49,15 @@ public final class Registers {
         return registers.get((Register)register);
     }
 
-    // TODO: use pattern matching for instanceof
-    // https://docs.oracle.com/en/java/javase/14/language/pattern-matching-instanceof-operator.html
+    /**
+     * Determines whether the current Registers instance is equal to the given object.
+     * @param o the object to compare with the current Registers instance
+     * @return true if the current Registers instance is equal to the given object, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
-        if (o instanceof Registers) {
-            Registers other = (Registers) o;
-            return registers.equals(other.registers);
+        if (o instanceof Registers r) {
+            return registers.equals(r.registers);
         }
         return false;
     }

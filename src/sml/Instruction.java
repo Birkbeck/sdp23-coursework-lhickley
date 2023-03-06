@@ -1,11 +1,15 @@
 package sml;
 
-// TODO: write a JavaDoc for the class
-
 /**
  * Represents an abstract instruction.
  *
- * @author ...
+ * This is the abstract form of a base unit of work in the program
+ *
+ * Defines the common methods across all instructions for the program
+ *
+ * Must be subclassed to give a concrete instruction
+ *
+ * @author lhickley
  */
 public abstract class Instruction {
 	protected final String label;
@@ -48,10 +52,28 @@ public abstract class Instruction {
 		return (getLabel() == null) ? "" : getLabel() + ": ";
 	}
 
-	// TODO: What does abstract in the declaration below mean?
-	//       (Write a short explanation.)
+	/* An abstract method only has a method signature
+	 * It does not have a body (so, then, also does not have an implementation)
+	 * This forces any class implementing this abstract class to also implement this method
+	 */
 	@Override
 	public abstract String toString();
 
-	// TODO: Make sure that subclasses also implement equals and hashCode (needed in class Machine).
+	/**
+	 * Implemented as abstract to enforce implementation in subclasses
+	 * There are too many particulars about each subclass to make a default method sensible.
+	 * @param o
+	 * @return
+	 */
+	@Override
+	public abstract boolean equals(Object o);
+
+	/**
+	 * Implemented as abstract to enforce implementation in subclasses
+	 * There are too many particulars about each subclass to make a default method sensible.
+	 * @return
+	 */
+	@Override
+	public abstract int hashCode();
+
 }

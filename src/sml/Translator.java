@@ -1,21 +1,24 @@
 package sml;
 
-import sml.instruction.*;
-
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Scanner;
-
-import static sml.Registers.Register;
+import java.util.*;
 
 /**
- * This class ....
+ * This class does the work of reading from a file and translating the contents of that file to a program for
+ * a machine to execute.
+ *
+ * Sets the contents of 'labels' and 'program' for a given machine instance, from an input file.
+ *
+ * Contains flows to ensure the program does not become corrupted, or interacts with those handled at a lower level
+ * to allow for a graceful termination of a corrupted program from an input file.
+ *
+ * Consists of methods for reading from a file and converting to an instruction set, and helper methods for doing so.
+ *
  * <p>
  * The translator of a <b>S</b><b>M</b>al<b>L</b> program.
  *
- * @author ...
+ * @author lhickley
  */
 public final class Translator {
 
@@ -24,8 +27,11 @@ public final class Translator {
     // line contains the characters in the current line that's not been processed yet
     private String line = "";
 
-    public Translator(String fileName) {
-        this.fileName =  fileName;
+    private final InstructionFactory instructionFactory;
+
+    public Translator(String fileName, InstructionFactory instructionFactory) {
+        this.fileName = fileName;
+        this.instructionFactory = instructionFactory;
     }
 
     // translate the small program in the file into lab (the labels) and
@@ -42,11 +48,22 @@ public final class Translator {
                 line = sc.nextLine();
                 String label = getLabel();
 
-                Instruction instruction = getInstruction(label);
-                if (instruction != null) {
-                    if (label != null)
-                        labels.addLabel(label, program.size());
-                    program.add(instruction);
+                try {
+                    Instruction instruction = getInstruction(label);
+                    if (instruction != null) {
+                        if (label != null)
+                            try {
+                                labels.addLabel(label, program.size());
+                            } catch (RuntimeException e) {
+                                System.out.println("Duplicate labels are not permitted.");
+                                System.out.println("The label '" + label + "' has been supplied earlier in the program source file.");
+                            }
+                        program.add(instruction);
+                    }
+                } catch (Exception e) {
+                    System.out.println("An exception occurred while reading the program for the file.  Details:\n" + e.getMessage());
+                    System.out.println("The program may become corrupted and the input file should be reviewed");
+                    break;
                 }
             }
         }
@@ -66,25 +83,15 @@ public final class Translator {
             return null;
 
         String opcode = scan();
-        switch (opcode) {
-            case AddInstruction.OP_CODE -> {
-                String r = scan();
-                String s = scan();
-                return new AddInstruction(label, Register.valueOf(r), Register.valueOf(s));
-            }
 
-            // TODO: add code for all other types of instructions
+        ArrayList<String> wordList = new ArrayList<>();
 
-            // TODO: Then, replace the switch by using the Reflection API
-
-            // TODO: Next, use dependency injection to allow this machine class
-            //       to work with different sets of opcodes (different CPUs)
-
-            default -> {
-                System.out.println("Unknown instruction: " + opcode);
-            }
+        while (line.length() > 0) {
+            String word = scan();
+            wordList.add(word);
         }
-        return null;
+
+        return instructionFactory.create(label, opcode, wordList);
     }
 
 
@@ -104,14 +111,12 @@ public final class Translator {
      */
     private String scan() {
         line = line.trim();
-
-        for (int i = 0; i < line.length(); i++)
-            if (Character.isWhitespace(line.charAt(i))) {
-                String word = line.substring(0, i);
-                line = line.substring(i);
-                return word;
-            }
-
+        ArrayList<String> splitLine = new ArrayList<>(Arrays.asList(line.split(" ")));
+        if (splitLine.size() > 0) {
+            String word = splitLine.remove(0);
+            line = String.join(" ", splitLine);
+            return word;
+        }
         return line;
     }
 }
